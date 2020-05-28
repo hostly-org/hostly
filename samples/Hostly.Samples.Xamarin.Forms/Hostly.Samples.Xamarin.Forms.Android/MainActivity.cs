@@ -3,6 +3,7 @@ using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
 using Hostly.Extensions;
+using Microsoft.Extensions.Configuration;
 using System;
 using Xamarin.Essentials;
 
@@ -27,8 +28,9 @@ namespace Hostly.Samples.Xamarin.Forms.Droid
             new XamarinHostBuilder()
                 .UseApplication<App>()
                 .UseStartup<Startup>()
-                .UseAppSettings(typeof(Startup).Assembly)
+                .UseAppSettings<Startup>()
                 .UsePlatform(this)
+                .ConfigureHostConfiguration(c => c.AddCommandLine(new string[] { $"ContentRoot={FileSystem.AppDataDirectory}" }))
                 .Build()
                 .StartAsync().Wait();
         }

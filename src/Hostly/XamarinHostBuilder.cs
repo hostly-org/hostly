@@ -1,15 +1,18 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Hosting.Internal;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using Xamarin.Forms;
 
 namespace Hostly
 {
+    /// <summary>
+    /// A builder for <see cref="IXamarinHost"/>
+    /// </summary>
     public class XamarinHostBuilder : IXamarinHostBuilder
     {
         private List<Action<IConfigurationBuilder>> _configureHostConfigActions = new List<Action<IConfigurationBuilder>>();
@@ -21,33 +24,58 @@ namespace Hostly
         private IConfiguration _hostConfiguration;
         private IConfiguration _appConfiguration;
         private XamarinHostBuilderContext _hostBuilderContext;
-        private IHostEnvironment _hostEnvironment;
+        private IXamarinHostEnvironment _hostEnvironment;
         private IServiceProvider _appServices;
 
+        /// <summary>
+        /// Adds a delegate for configuring additional services for the <see cref="IXamarinHost"/>. This may be called multiple times.
+        /// </summary>
+        /// <param name="configureDelegate">A delegate for configuring the <see cref="IServiceCollection"/>.</param>
+        /// <returns>The <see cref="IXamarinHostBuilder"/>.</returns>
         public IXamarinHostBuilder ConfigureHostConfiguration(Action<IConfigurationBuilder> configureDelegate)
         {
             _configureHostConfigActions.Add(configureDelegate ?? throw new ArgumentNullException(nameof(configureDelegate)));
             return this;
         }
 
+        /// <summary>
+        /// Adds a delegate for configuring configuration for the <see cref="IXamarinHost"/>. This may be called multiple times.
+        /// </summary>
+        /// <param name="configureDelegate">A delegate for configuring the <see cref="IConfiguration"/>.</param>
+        /// <returns>The <see cref="IXamarinHostBuilder"/>.</returns>
         public IXamarinHostBuilder ConfigureAppConfiguration(Action<XamarinHostBuilderContext, IConfigurationBuilder> configureDelegate)
         {
             _configureAppConfigActions.Add(configureDelegate ?? throw new ArgumentNullException(nameof(configureDelegate)));
             return this;
         }
 
+        /// <summary>
+        /// Adds a delegate for configuring additional services for the Xamarin host. This may be called multiple times.
+        /// </summary>
+        /// <param name="configureDelegate">A delegate for configuring the <see cref="IServiceCollection"/>.</param>
+        /// <returns>The <see cref="IXamarinHostBuilder"/>.</returns>
         public IXamarinHostBuilder ConfigureServices(Action<XamarinHostBuilderContext, IServiceCollection> configureDelegate)
         {
             _configureServicesActions.Add(configureDelegate ?? throw new ArgumentNullException(nameof(configureDelegate)));
             return this;
         }
 
+        /// <summary>
+        /// Registers the <see cref="IServiceProviderFactory<typeparamref name="TContainerBuilder"/>"/>
+        /// </summary>
+        /// <param name="factory">The <see cref="IServiceProviderFactory<typeparamref name="TContainerBuilder"/>"/> to be registered .</param>
+        /// <returns>The <see cref="IXamarinHostBuilder"/>.</returns>
         public IXamarinHostBuilder UseServiceProviderFactory<TContainerBuilder>(IServiceProviderFactory<TContainerBuilder> factory)
         {
             _serviceProviderFactory = new ServiceFactoryAdapter<TContainerBuilder>(factory ?? throw new ArgumentNullException(nameof(factory)));
             return this;
         }
 
+        /// <summary>
+        /// Adds a delegate for configuring the <typeparamref name="TContainerBuilder"/>. This may be called multiple times.
+        /// </summary>
+        /// <param name="configureDelegate">A delegate for configuring the <typeparamref name="TContainerBuilder"/>.</param>
+        /// <returns>The <see cref="IXamarinHostBuilder"/>.</returns>
         public IXamarinHostBuilder ConfigureContainer<TContainerBuilder>(Action<XamarinHostBuilderContext, TContainerBuilder> configureDelegate)
         {
             _configureContainerActions.Add(new ConfigureContainerAdapter<TContainerBuilder>(configureDelegate
@@ -55,6 +83,10 @@ namespace Hostly
             return this;
         }
 
+        /// <summary>
+        /// Builds the <see cref="IXamarinHost"/>
+        /// </summary>
+        /// <returns>The <see cref="IXamarinHost"/>.</returns>
         public IXamarinHost Build()
         {
             if (_hostBuilt)
@@ -84,11 +116,12 @@ namespace Hostly
 
         private void CreateHostingEnvironment()
         {
-            _hostEnvironment = new HostingEnvironment()
+            _hostEnvironment = new XamarinHostEnvironment
             {
-                ApplicationName = _hostConfiguration[HostDefaults.ApplicationKey],
-                EnvironmentName = _hostConfiguration[HostDefaults.EnvironmentKey] ?? EnvironmentName.Production,
+                ApplicationName = _hostConfiguration[XamarinHostDefaults.ApplicationKey],
+                EnvironmentName = _hostConfiguration[XamarinHostDefaults.EnvironmentKey] ?? Environments.Production,
                 ContentRootPath = ResolveContentRootPath(_hostConfiguration[HostDefaults.ContentRootKey], AppContext.BaseDirectory),
+                DevicePlatform = Device.RuntimePlatform
             };
             _hostEnvironment.ContentRootFileProvider = new PhysicalFileProvider(_hostEnvironment.ContentRootPath);
         }
@@ -111,8 +144,7 @@ namespace Hostly
             _hostBuilderContext = new XamarinHostBuilderContext
             {
                 HostEnvironment = _hostEnvironment,
-                Configuration = _hostConfiguration,
-                RuntimePlatform = Device.RuntimePlatform
+                Configuration = _hostConfiguration
             };
         }
 
@@ -135,7 +167,7 @@ namespace Hostly
             services.AddSingleton(_hostBuilderContext);
             services.AddSingleton(_appConfiguration);
             services.AddSingleton<IHostApplicationLifetime, ApplicationLifetime>();
-            services.AddSingleton<IHostLifetime, XamarinBaseLifetime>();
+            services.AddSingleton<IHostLifetime, XamarinHostLifetime>();
             services.AddSingleton<IXamarinHost, XamarinHost>();
             services.AddOptions();
             services.AddLogging();

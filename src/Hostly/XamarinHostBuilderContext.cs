@@ -1,12 +1,19 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
 
 namespace Hostly
 {
+    /// <summary>
+    /// Represents the context for <see cref="IXamarinHostBuilder"/>/>
+    /// </summary>
     public class XamarinHostBuilderContext
     {
-        public IHostEnvironment HostEnvironment { get; set; }
+        /// <summary>
+        /// Represents the <see cref="IXamarinHostEnvironment"/> for <see cref="IXamarinHostBuilder"/>/>
+        /// </summary>
+        public IXamarinHostEnvironment HostEnvironment { get; set; }
+        /// <summary>
+        /// Represents the <see cref="IConfiguration"/> for <see cref="IXamarinHostBuilder"/>/>
+        /// </summary>
         public IConfiguration Configuration { get; set; }
-        public string RuntimePlatform { get; set; }
     }
 }

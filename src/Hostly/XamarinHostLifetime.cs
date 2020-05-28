@@ -5,11 +5,11 @@ using Microsoft.Extensions.Hosting;
 
 namespace Hostly
 {
-    public class XamarinBaseLifetime :  IHostLifetime
+    internal sealed class XamarinHostLifetime : IHostLifetime
     {
         private readonly IHostApplicationLifetime _applicationLifetime;
 
-        public XamarinBaseLifetime(IHostApplicationLifetime applicationLifetime,
+        public XamarinHostLifetime(IHostApplicationLifetime applicationLifetime,
             IXamarinHostingPlatform platform)
         {
             if (applicationLifetime == null)

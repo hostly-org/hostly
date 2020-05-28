@@ -2,7 +2,7 @@
 
 namespace Hostly.Samples.Xamarin.Forms
 {
-    public class Startup : IXamarinStartup
+    public class Startup
     {
         public void ConfigureServices(XamarinHostBuilderContext ctx, IServiceCollection services)
         {

@@ -1,7 +1,9 @@
 ﻿using Foundation;
 using Hostly.Extensions;
+using Microsoft.Extensions.Configuration;
 using System;
 using UIKit;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace Hostly.Samples.Xamarin.Forms.iOS
@@ -29,8 +31,9 @@ namespace Hostly.Samples.Xamarin.Forms.iOS
             new XamarinHostBuilder()
                 .UseApplication<App>()
                 .UseStartup<Startup>()
-                .UseAppSettings(typeof(Startup).Assembly)
+                .UseAppSettings<Startup>()
                 .UsePlatform(this)
+                .ConfigureHostConfiguration(c => c.AddCommandLine(new string[] { $"ContentRoot={FileSystem.AppDataDirectory}" }))
                 .Build()
                 .StartAsync().Wait();
 
@@ -51,8 +54,8 @@ namespace Hostly.Samples.Xamarin.Forms.iOS
 
         void IXamarinHostingPlatform.LoadApplication(IXamarinApplication application)
         {
-            if (application is global::Xamarin.Forms.Application)
-                base.LoadApplication((global::Xamarin.Forms.Application)application);
+            if (application is Application)
+                base.LoadApplication((Application)application);
 
             throw new ArgumentException("Application supplied is of incorrect type");
         }
