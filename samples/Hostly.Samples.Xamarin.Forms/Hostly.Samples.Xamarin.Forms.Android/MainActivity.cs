@@ -55,10 +55,10 @@ namespace Hostly.Samples.Xamarin.Forms.Droid
 
         void IXamarinHostingPlatform.LoadApplication(IXamarinApplication application)
         {
-            if (application is global::Xamarin.Forms.Application)
+            if (typeof(global::Xamarin.Forms.Application).IsAssignableFrom(application.GetType()))
                 base.LoadApplication((global::Xamarin.Forms.Application)application);
-
-            throw new ArgumentException("Application supplied is of incorrect type");
+            else
+                throw new ArgumentException("Application supplied is of incorrect type");
         }
     }
 }
