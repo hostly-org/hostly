@@ -18,6 +18,6 @@ jobs:
     - name: Install dependencies
       run: dotnet restore 
     - name: Build
-      run: dotnet build "src/Hostly/Hostly.csproj"--configuration Release --no-restore
+      run: dotnet build "src/Hostly/Hostly.csproj" --configuration Release --no-restore
     - name: Test
       run: dotnet test "tests/Hostly.Tests/Hostly.Tests.csproj" --no-restore --verbosity normal
