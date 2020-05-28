@@ -16,6 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\Hostly.Hosting\Hostly.csproj" />
+    <ProjectReference Include="..\..\..\src\Hostly\Hostly.csproj" />
   </ItemGroup>
 </Project>

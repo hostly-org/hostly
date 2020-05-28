@@ -88,8 +88,8 @@
     <Folder Include="Resources\drawable\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\Hostly.Hosting\Hostly.csproj">
-      <Project>{8b7a225c-4f7a-4191-92b6-5a0b2bcb21dd}</Project>
+    <ProjectReference Include="..\..\..\src\Hostly\Hostly.csproj">
+      <Project>{f49baa80-1e8b-4879-b43a-4449933a0158}</Project>
       <Name>Hostly</Name>
     </ProjectReference>
     <ProjectReference Include="..\Hostly.Samples.Xamarin.Forms\Hostly.Samples.Xamarin.Forms.csproj">
