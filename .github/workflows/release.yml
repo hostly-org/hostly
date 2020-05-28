@@ -1,4 +1,4 @@
-name: .NET Core
+name: Release
 
 on:
   push:
@@ -15,9 +15,9 @@ jobs:
     - name: Install dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --configuration Release --no-restore
+      run: dotnet build "src/Hostly/Hostly.csproj"--configuration Release --no-restore
     - name: Test
-      run: dotnet test --no-restore --verbosity normal
+      run: dotnet test "tests/Hostly.Tests/Hostly.Tests.csproj" --no-restore --verbosity normal
     - name: publish on version change
       id: publish_nuget
       uses: rohith/publish-nuget@v2
