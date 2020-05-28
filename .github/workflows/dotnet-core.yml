@@ -1,0 +1,39 @@
+name: .NET Core
+
+on:
+  push:
+    branches: [ release/* ]
+jobs:
+  build:
+    runs-on: ubuntu-latestsrc/
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.101
+    - name: Install dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+    - name: Test
+      run: dotnet test --no-restore --verbosity normal
+    - name: publish on version change
+      id: publish_nuget
+      uses: rohith/publish-nuget@v2
+      with:
+        PROJECT_FILE_PATH: src/Hostly/Hostly.csproj
+        PACKAGE_NAME: Hostly
+        VERSION_FILE_PATH: Directory.Build.props
+        VERSION_REGEX: <Version>(.*)<\/Version>
+        TAG_COMMIT: false
+        NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+        NUGET_SOURCE: https://api.nuget.org
+
+        # Useful with external providers like Nerdbank.GitVersioning, ignores VERSION_FILE_PATH & VERSION_REGEX
+        # VERSION_STATIC: 1.0.0
+        # Format of the git tag, [*] gets replaced with actual version
+        # TAG_FORMAT: v*
+        # Flag to toggle pushing symbols along with nuget package to the server, disabled by default
+        # INCLUDE_SYMBOLS: false
+
