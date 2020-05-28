@@ -19,6 +19,11 @@ namespace Hostly.Extensions
              });
         }
 
+        public static IXamarinHostBuilder UseAppSettings<TAssemblyClass>(this IXamarinHostBuilder builder)
+        {
+            return builder.UseAppSettings(typeof(TAssemblyClass).Assembly);
+        }
+
         public static IXamarinHostBuilder UseApplication<TApp>(this IXamarinHostBuilder builder) where TApp : class, IXamarinApplication
         {
             return builder.ConfigureServices((context, services) =>
