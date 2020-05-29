@@ -52,4 +52,4 @@ jobs:
 
     # Publish projects
     - name: publish
-      run: dotnet nuget push *.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+      run: dotnet nuget push *.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --no-symbols --skip-duplicate
