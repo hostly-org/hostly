@@ -6,7 +6,7 @@ namespace Hostly.Samples.Xamarin.Forms
     {
         public void ConfigureServices(XamarinHostBuilderContext ctx, IServiceCollection services)
         {
-            // Register all of your services here
+            services.AddTransient(typeof(MainPage));
         }
     }
 }

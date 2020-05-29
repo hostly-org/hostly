@@ -60,11 +60,14 @@ namespace Hostly.Extensions
         /// <typeparam name ="TApp">The type used to register <see cref="IXamarinApplication"/>. Must either be of type Application or IXamarinApplication</typeparam>
         /// <param name="builder">The <see cref="IXamarinHostBuilder"/> to configure.</param>
         /// <returns>The <see cref="IXamarinHostBuilder"/>.</returns>
-        public static IXamarinHostBuilder UseApplication<TApp>(this IXamarinHostBuilder builder) where TApp : class, new()
+        public static IXamarinHostBuilder UseApplication<TApp>(this IXamarinHostBuilder builder)
         {
             return builder.ConfigureServices((context, services) =>
             {
-                services.AddSingleton(XamarinApplicationBuilder.Build<TApp>());
+                if (typeof(IXamarinApplication).IsAssignableFrom(typeof(TApp)))
+                    services.AddSingleton(typeof(IXamarinApplication), typeof(TApp));
+                else
+                    services.AddSingleton(typeof(IXamarinApplication), XamarinApplicationBuilder.Build<TApp>());
             });
         }
 
