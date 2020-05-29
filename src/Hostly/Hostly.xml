@@ -1,0 +1,247 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Hostly</name>
+    </assembly>
+    <members>
+        <member name="M:Hostly.Extensions.XamarinHostBuilderExtensions.UseAppSettings(Hostly.IXamarinHostBuilder,System.Reflection.Assembly)">
+            <summary>
+            Initializes <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/> with appsettings,json files.
+            </summary>
+            <param name="builder">The <see cref="T:Hostly.IXamarinHostBuilder"/> to configure.</param>
+            <param name="assembly">The assembly that contains the embedded appsettings.json files.</param>
+            <returns>The <see cref="T:Hostly.IXamarinHostBuilder"/>.</returns>
+        </member>
+        <member name="M:Hostly.Extensions.XamarinHostBuilderExtensions.UseAppSettings``1(Hostly.IXamarinHostBuilder)">
+            <summary>
+            Initializes <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/> with appsettings,json files.
+            </summary>
+            <typeparam name ="TAssemblyClass">The type in the assembly that contains the embedded appsettings.json files</typeparam>
+            <param name="builder">The <see cref="T:Hostly.IXamarinHostBuilder"/> to configure.</param>
+            <returns>The <see cref="T:Hostly.IXamarinHostBuilder"/>.</returns>
+        </member>
+        <member name="M:Hostly.Extensions.XamarinHostBuilderExtensions.UseApplication``1(Hostly.IXamarinHostBuilder)">
+            <summary>
+            Configures the host services with an insatnce of <see cref="T:Hostly.IXamarinApplication"/>
+            </summary>
+            <typeparam name ="TApp">The type used to register <see cref="T:Hostly.IXamarinApplication"/></typeparam>
+            <param name="builder">The <see cref="T:Hostly.IXamarinHostBuilder"/> to configure.</param>
+            <returns>The <see cref="T:Hostly.IXamarinHostBuilder"/>.</returns>
+        </member>
+        <member name="M:Hostly.Extensions.XamarinHostBuilderExtensions.UseApplication``1(Hostly.IXamarinHostBuilder,``0)">
+            <summary>
+            Configures the host services with an insatnce of <see cref="T:Hostly.IXamarinApplication"/>
+            </summary>
+            <typeparam name ="TApp">The type used to register <see cref="T:Hostly.IXamarinApplication"/></typeparam>
+            <param name="builder">The <see cref="T:Hostly.IXamarinHostBuilder"/> to configure.</param>
+            <param name="app">The instance of <see cref="T:Hostly.IXamarinApplication"/> to register.</param>
+            <returns>The <see cref="T:Hostly.IXamarinHostBuilder"/>.</returns>
+        </member>
+        <member name="M:Hostly.Extensions.XamarinHostBuilderExtensions.UsePlatform``1(Hostly.IXamarinHostBuilder)">
+            <summary>
+            Configures the host services with an insatnce of <see cref="T:Hostly.IXamarinHostingPlatform"/>
+            </summary>
+            <typeparam name ="TPlatform">The type used to register <see cref="T:Hostly.IXamarinHostingPlatform"/></typeparam>
+            <param name="builder">The <see cref="T:Hostly.IXamarinHostBuilder"/> to configure.</param>
+            <returns>The <see cref="T:Hostly.IXamarinHostBuilder"/>.</returns>
+        </member>
+        <member name="M:Hostly.Extensions.XamarinHostBuilderExtensions.UsePlatform``1(Hostly.IXamarinHostBuilder,``0)">
+            <summary>
+            Configures the host services with an insatnce of <see cref="T:Hostly.IXamarinHostingPlatform"/>
+            </summary>
+            <typeparam name ="TApp">The type used to register <see cref="T:Hostly.IXamarinHostingPlatform"/></typeparam>
+            <param name="builder">The <see cref="T:Hostly.IXamarinHostBuilder"/> to configure.</param>
+            <param name="app">The instance of <see cref="T:Hostly.IXamarinHostingPlatform"/> to register.</param>
+            <returns>The <see cref="T:Hostly.IXamarinHostBuilder"/>.</returns>
+        </member>
+        <member name="M:Hostly.Extensions.XamarinHostBuilderExtensions.UseStartup(Hostly.IXamarinHostBuilder,System.Type)">
+            <summary>
+            Configures the host services with a Startup class
+            </summary>
+            <param name="builder">The <see cref="T:Hostly.IXamarinHostBuilder"/> to configure.</param>
+            <param name="startupType">The class type to configure services with</param>
+            <returns>The <see cref="T:Hostly.IXamarinHostBuilder"/>.</returns>
+        </member>
+        <member name="M:Hostly.Extensions.XamarinHostBuilderExtensions.UseStartup``1(Hostly.IXamarinHostBuilder,``0)">
+            <summary>
+            Configures the host services with a Startup class
+            </summary>
+            <typeparam name ="TApp">The type used to configure services</typeparam>
+            <param name="builder">The <see cref="T:Hostly.IXamarinHostBuilder"/> to configure.</param>
+            <param name="startup">The instance of startup class to configure services with</param>
+            <returns>The <see cref="T:Hostly.IXamarinHostBuilder"/>.</returns>
+        </member>
+        <member name="M:Hostly.Extensions.XamarinHostBuilderExtensions.UseStartup``1(Hostly.IXamarinHostBuilder)">
+            <summary>
+            Configures the host services with a Startup class
+            </summary>
+            <typeparam name ="TApp">The type used to configure services</typeparam>
+            <param name="builder">The <see cref="T:Hostly.IXamarinHostBuilder"/> to configure.</param>
+            <returns>The <see cref="T:Hostly.IXamarinHostBuilder"/>.</returns>
+        </member>
+        <member name="T:Hostly.IXamarinApplication">
+            <summary>
+            Represents a <see cref="T:Xamarin.Forms.Application"/>
+            </summary>
+        </member>
+        <member name="T:Hostly.IXamarinHost">
+            <summary>
+            Represents a configured xamarin host
+            </summary>
+        </member>
+        <member name="T:Hostly.IXamarinHostBuilder">
+            <summary>
+            A builder for <see cref="T:Hostly.IXamarinHost"/>
+            </summary>
+        </member>
+        <member name="M:Hostly.IXamarinHostBuilder.ConfigureHostConfiguration(System.Action{Microsoft.Extensions.Configuration.IConfigurationBuilder})">
+            <summary>
+            Adds a delegate for configuring additional services for the <see cref="T:Hostly.IXamarinHost"/>. This may be called multiple times.
+            </summary>
+            <param name="configureDelegate">A delegate for configuring the <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/>.</param>
+            <returns>The <see cref="T:Hostly.IXamarinHostBuilder"/>.</returns>
+        </member>
+        <member name="M:Hostly.IXamarinHostBuilder.ConfigureAppConfiguration(System.Action{Hostly.XamarinHostBuilderContext,Microsoft.Extensions.Configuration.IConfigurationBuilder})">
+            <summary>
+            Adds a delegate for configuring configuration for the <see cref="T:Hostly.IXamarinHost"/>. This may be called multiple times.
+            </summary>
+            <param name="configureDelegate">A delegate for configuring the <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/>.</param>
+            <returns>The <see cref="T:Hostly.IXamarinHostBuilder"/>.</returns>
+        </member>
+        <member name="M:Hostly.IXamarinHostBuilder.ConfigureServices(System.Action{Hostly.XamarinHostBuilderContext,Microsoft.Extensions.DependencyInjection.IServiceCollection})">
+            <summary>
+            Adds a delegate for configuring additional services for the Xamarin host. This may be called multiple times.
+            </summary>
+            <param name="configureDelegate">A delegate for configuring the <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/>.</param>
+            <returns>The <see cref="T:Hostly.IXamarinHostBuilder"/>.</returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Hostly.IXamarinHostBuilder.UseServiceProviderFactory``1(Microsoft.Extensions.DependencyInjection.IServiceProviderFactory{``0})" -->
+        <member name="M:Hostly.IXamarinHostBuilder.ConfigureContainer``1(System.Action{Hostly.XamarinHostBuilderContext,``0})">
+            <summary>
+            Adds a delegate for configuring the <typeparamref name="TContainerBuilder"/>. This may be called multiple times.
+            </summary>
+            <param name="configureDelegate">A delegate for configuring the <typeparamref name="TContainerBuilder"/>.</param>
+            <returns>The <see cref="T:Hostly.IXamarinHostBuilder"/>.</returns>
+        </member>
+        <member name="M:Hostly.IXamarinHostBuilder.Build">
+            <summary>
+            Builds the <see cref="T:Hostly.IXamarinHost"/>
+            </summary>
+            <returns>The <see cref="T:Hostly.IXamarinHost"/>.</returns>
+        </member>
+        <member name="P:Hostly.IXamarinHostEnvironment.DevicePlatform">
+            <summary>
+            Represents the platform the <see cref="T:Hostly.IXamarinHost"/> is being executed on/>
+            </summary>
+        </member>
+        <member name="T:Hostly.IXamarinHostingPlatform">
+            <summary>
+            Represents an entry point for a specific device platform i.e. `FormsAppCompatActivity` in Android or `FormsApplicationDelegate` in IOS
+            </summary>
+        </member>
+        <member name="E:Hostly.IXamarinHostingPlatform.OnCreated">
+            <summary>
+            Event fired when platform has been created
+            </summary>
+        </member>
+        <member name="E:Hostly.IXamarinHostingPlatform.OnDestroyed">
+            <summary>
+            Event fired when platform has been destroyed (this is only avaliable)
+            </summary>
+        </member>
+        <member name="E:Hostly.IXamarinHostingPlatform.OnStarted">
+            <summary>
+            Event fired when platform has started
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "E:Hostly.IXamarinHostingPlatform.OnStopped" -->
+        <!-- Badly formed XML comment ignored for member "E:Hostly.IXamarinHostingPlatform.OnDeactivate" -->
+        <!-- Badly formed XML comment ignored for member "E:Hostly.IXamarinHostingPlatform.OnPause" -->
+        <!-- Badly formed XML comment ignored for member "E:Hostly.IXamarinHostingPlatform.OnEnterForeground" -->
+        <!-- Badly formed XML comment ignored for member "E:Hostly.IXamarinHostingPlatform.OnResume" -->
+        <!-- Badly formed XML comment ignored for member "M:Hostly.IXamarinHostingPlatform.LoadApplication(Hostly.IXamarinApplication)" -->
+        <member name="T:Hostly.IXamarinStartup">
+            <summary>
+            Represents a Startup file used to configure <see cref="T:Hostly.IXamarinHost"/>
+            </summary>
+        </member>
+        <member name="M:Hostly.IXamarinStartup.ConfigureServices(Hostly.XamarinHostBuilderContext,Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Configures additional services for the <see cref="T:Hostly.IXamarinHost"/>.
+            </summary>
+            <param name="ctx">The context of <see cref="T:Hostly.IXamarinHostBuilder"/></param>
+            <param name="services">The <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> to be configured</param>
+            <returns><see cref="T:System.Void"/>.</returns>
+        </member>
+        <member name="T:Hostly.XamarinHostBuilder">
+            <summary>
+            A builder for <see cref="T:Hostly.IXamarinHost"/>
+            </summary>
+        </member>
+        <member name="M:Hostly.XamarinHostBuilder.ConfigureHostConfiguration(System.Action{Microsoft.Extensions.Configuration.IConfigurationBuilder})">
+            <summary>
+            Adds a delegate for configuring additional services for the <see cref="T:Hostly.IXamarinHost"/>. This may be called multiple times.
+            </summary>
+            <param name="configureDelegate">A delegate for configuring the <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/>.</param>
+            <returns>The <see cref="T:Hostly.IXamarinHostBuilder"/>.</returns>
+        </member>
+        <member name="M:Hostly.XamarinHostBuilder.ConfigureAppConfiguration(System.Action{Hostly.XamarinHostBuilderContext,Microsoft.Extensions.Configuration.IConfigurationBuilder})">
+            <summary>
+            Adds a delegate for configuring configuration for the <see cref="T:Hostly.IXamarinHost"/>. This may be called multiple times.
+            </summary>
+            <param name="configureDelegate">A delegate for configuring the <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/>.</param>
+            <returns>The <see cref="T:Hostly.IXamarinHostBuilder"/>.</returns>
+        </member>
+        <member name="M:Hostly.XamarinHostBuilder.ConfigureServices(System.Action{Hostly.XamarinHostBuilderContext,Microsoft.Extensions.DependencyInjection.IServiceCollection})">
+            <summary>
+            Adds a delegate for configuring additional services for the Xamarin host. This may be called multiple times.
+            </summary>
+            <param name="configureDelegate">A delegate for configuring the <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/>.</param>
+            <returns>The <see cref="T:Hostly.IXamarinHostBuilder"/>.</returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Hostly.XamarinHostBuilder.UseServiceProviderFactory``1(Microsoft.Extensions.DependencyInjection.IServiceProviderFactory{``0})" -->
+        <member name="M:Hostly.XamarinHostBuilder.ConfigureContainer``1(System.Action{Hostly.XamarinHostBuilderContext,``0})">
+            <summary>
+            Adds a delegate for configuring the <typeparamref name="TContainerBuilder"/>. This may be called multiple times.
+            </summary>
+            <param name="configureDelegate">A delegate for configuring the <typeparamref name="TContainerBuilder"/>.</param>
+            <returns>The <see cref="T:Hostly.IXamarinHostBuilder"/>.</returns>
+        </member>
+        <member name="M:Hostly.XamarinHostBuilder.Build">
+            <summary>
+            Builds the <see cref="T:Hostly.IXamarinHost"/>
+            </summary>
+            <returns>The <see cref="T:Hostly.IXamarinHost"/>.</returns>
+        </member>
+        <member name="T:Hostly.XamarinHostBuilderContext">
+            <summary>
+            Represents the context for <see cref="T:Hostly.IXamarinHostBuilder"/>/>
+            </summary>
+        </member>
+        <member name="P:Hostly.XamarinHostBuilderContext.HostEnvironment">
+            <summary>
+            Represents the <see cref="T:Hostly.IXamarinHostEnvironment"/> for <see cref="T:Hostly.IXamarinHostBuilder"/>/>
+            </summary>
+        </member>
+        <member name="P:Hostly.XamarinHostBuilderContext.Configuration">
+            <summary>
+            Represents the <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/> for <see cref="T:Hostly.IXamarinHostBuilder"/>/>
+            </summary>
+        </member>
+        <member name="T:Hostly.XamarinHostDefaults">
+            <summary>
+            Represents default keys in <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/> for configuring <see cref="T:Microsoft.Extensions.Hosting.IHostEnvironment"/>/>
+            </summary>
+        </member>
+        <member name="F:Hostly.XamarinHostDefaults.EnvironmentKey">
+            <summary>
+            Represents the key in <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/> for configuring <see cref="P:Microsoft.Extensions.Hosting.IHostEnvironment.EnvironmentName"/>/>
+            </summary>
+        </member>
+        <member name="F:Hostly.XamarinHostDefaults.ApplicationKey">
+            <summary>
+            Represents the key in <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/> for configuring <see cref="P:Microsoft.Extensions.Hosting.IHostEnvironment.ApplicationName"/>/>
+            </summary>
+        </member>
+    </members>
+</doc>

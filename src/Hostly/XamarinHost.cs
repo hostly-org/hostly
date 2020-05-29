@@ -1,12 +1,12 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Hosting.Internal;
-using Microsoft.Extensions.Options;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Hosting.Internal;
+using Microsoft.Extensions.Options;
 
 namespace Hostly
 {
@@ -61,9 +61,20 @@ namespace Hostly
                 await hostedService.StartAsync(cancellationToken).ConfigureAwait(false);
             }
 
-            _applicationLifetime?.NotifyStarted();
+            // Initialise empty app event handlers to prevent null reference exceptions.
+            _platform.OnCreated += (sender, args) => { };
+            _platform.OnDeactivate += (sender, args) => { };
+            _platform.OnDestroyed += (sender, args) => { };
+            _platform.OnEnterForeground += (sender, args) => { };
+            _platform.OnPause += (sender, args) => { };
+            _platform.OnResume += (sender, args) => { };
+            _platform.OnStarted += (sender, args) => { };
+
+            // Register host to stop when app on platform stops
+            _platform.OnStopped += async (sender, args) => await StopAsync();
 
             _platform.LoadApplication(_application);
+            _applicationLifetime?.NotifyStarted();
         }
 
         public async Task StopAsync(CancellationToken cancellationToken = default)

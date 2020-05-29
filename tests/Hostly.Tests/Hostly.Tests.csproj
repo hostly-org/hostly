@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="XamarinHostBUilder\**" />
+    <EmbeddedResource Remove="XamarinHostBUilder\**" />
+    <None Remove="XamarinHostBUilder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="appsettings.json" />
     <None Remove="appsettings.test.json" />
   </ItemGroup>
@@ -32,10 +38,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Hostly\Hostly.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="XamarinHostBUilder\" />
   </ItemGroup>
 
 </Project>

@@ -8,6 +8,9 @@ using Xamarin.Essentials;
 
 namespace Hostly.Extensions
 {
+    /// <summary>
+    /// Extension methods for <see cref="IXamarinHostBuilder"/>.
+    /// </summary>
     public static class XamarinHostBuilderExtensions
     {
         /// <summary>
@@ -95,9 +98,9 @@ namespace Hostly.Extensions
         /// <summary>
         /// Configures the host services with an insatnce of <see cref="IXamarinHostingPlatform"/>
         /// </summary>
-        /// <typeparam name ="TApp">The type used to register <see cref="IXamarinHostingPlatform"/></typeparam>
+        /// <typeparam name ="TPlatform">The type used to register <see cref="IXamarinHostingPlatform"/></typeparam>
         /// <param name="builder">The <see cref="IXamarinHostBuilder"/> to configure.</param>
-        /// <param name="app">The instance of <see cref="IXamarinHostingPlatform"/> to register.</param>
+        /// <param name="platform">The instance of <see cref="IXamarinHostingPlatform"/> to register.</param>
         /// <returns>The <see cref="IXamarinHostBuilder"/>.</returns>
         public static IXamarinHostBuilder UsePlatform<TPlatform>(this IXamarinHostBuilder builder, TPlatform platform) where TPlatform : IXamarinHostingPlatform
         {
@@ -136,8 +139,8 @@ namespace Hostly.Extensions
         /// <summary>
         /// Configures the host services with a Startup class
         /// </summary>
-        /// <typeparam name ="TApp">The type used to configure services</typeparam>
-        /// <param name="builder">The <see cref="IXamarinHostBuilder"/> to configure.</param>
+        /// <typeparam name ="TStartup">The type used to configure services</typeparam>
+        /// <param name="hostBuilder">The <see cref="IXamarinHostBuilder"/> to configure.</param>
         /// <param name="startup">The instance of startup class to configure services with</param>
         /// <returns>The <see cref="IXamarinHostBuilder"/>.</returns>
         public static IXamarinHostBuilder UseStartup<TStartup>(this IXamarinHostBuilder hostBuilder, TStartup startup) where TStartup : class
@@ -164,8 +167,8 @@ namespace Hostly.Extensions
         /// <summary>
         /// Configures the host services with a Startup class
         /// </summary>
-        /// <typeparam name ="TApp">The type used to configure services</typeparam>
-        /// <param name="builder">The <see cref="IXamarinHostBuilder"/> to configure.</param>
+        /// <typeparam name ="TStartup">The type used to configure services</typeparam>
+        /// <param name="hostBuilder">The <see cref="IXamarinHostBuilder"/> to configure.</param>
         /// <returns>The <see cref="IXamarinHostBuilder"/>.</returns>
         public static IXamarinHostBuilder UseStartup<TStartup>(this IXamarinHostBuilder hostBuilder) where TStartup : class, new()
         {
