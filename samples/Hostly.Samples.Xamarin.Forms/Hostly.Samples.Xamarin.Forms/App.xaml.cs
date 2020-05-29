@@ -1,14 +1,15 @@
-﻿using Xamarin.Forms;
+﻿using System;
+using Xamarin.Forms;
 
 namespace Hostly.Samples.Xamarin.Forms
 {
     public partial class App : Application
     {
-        public App()
+        public App(MainPage mainPage)
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            MainPage = mainPage;
         }
 
         protected override void OnStart()

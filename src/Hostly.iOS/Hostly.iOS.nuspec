@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Hostly.iOS</id>
-    <version>1.0.2.0</version>
+    <version>1.1.2.0</version>
     <title>Hostly.iOS</title>
     <authors>hostly-org</authors>
     <owners>hostly-org</owners>
@@ -15,7 +15,7 @@
     <tags>Xamarin,Host,NetCore</tags>
     <dependencies>
       <group>
-        <dependency id="Hostly" version="1.1.1.0" />
+        <dependency id="Hostly" version="1.1.2.0" />
         <dependency id="Xamarin.Forms" version="4.3.0.908675" />
       </group>
     </dependencies>
