@@ -8,11 +8,21 @@
     <RepositoryUrl>https://github.com/hostly-org/hostly</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>Xamarin,Host,NetCore</PackageTags>
-    <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+    <PackageReleaseNotes></PackageReleaseNotes>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.0</FileVersion>
+    <AssemblyVersion>1.1.0.0</AssemblyVersion>
+    <FileVersion>1.1.0.0</FileVersion>
+    <Copyright>Copyright 2020</Copyright>
+    <Version>1.1.0</Version>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>E:\Git\hostly-org\hostly\src\Hostly\Hostly.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>E:\Git\hostly-org\hostly\src\Hostly\Hostly.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

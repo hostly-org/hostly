@@ -7,6 +7,12 @@ namespace Hostly.Tests.Mocks
     {
         public event EventHandler OnStarted;
         public event EventHandler OnStopped;
+        public event EventHandler OnCreated;
+        public event EventHandler OnDestroyed;
+        public event EventHandler OnDeactivate;
+        public event EventHandler OnPause;
+        public event EventHandler OnEnterForeground;
+        public event EventHandler OnResume;
 
         public bool Loaded { get; private set; }
 

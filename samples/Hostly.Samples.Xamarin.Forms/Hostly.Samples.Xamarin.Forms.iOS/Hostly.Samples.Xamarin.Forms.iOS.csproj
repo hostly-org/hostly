@@ -127,6 +127,12 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Hostly.iOS\Hostly.iOS.csproj">
+      <Project>{73eb7975-67d3-4d99-a46c-7a9623c2234f}</Project>
+      <Name>Hostly.iOS</Name>
+      <IsAppExtension>false</IsAppExtension>
+      <IsWatchApp>false</IsWatchApp>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\src\Hostly\Hostly.csproj">
       <Project>{f49baa80-1e8b-4879-b43a-4449933a0158}</Project>
       <Name>Hostly</Name>
