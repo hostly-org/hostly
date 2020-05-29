@@ -27,9 +27,9 @@ jobs:
 
     - name: Build Hostly
       run: dotnet build "src/Hostly/Hostly.csproj" --configuration Release --no-restore
-    - namme: Build Hostly.Android
+    - name: Build Hostly.Android
       run: msbuild "src/Hostly.Android/Hostly.Android.csproj" -p:Configuration=Release
-    - namme: Build Hostly.iOS
+    - name: Build Hostly.iOS
       run: msbuild "src/Hostly.iOS/Hostly.iOS.csproj" -p:Configuration=Release
 
     - name: Test
