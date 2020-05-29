@@ -46,9 +46,9 @@ jobs:
     - name: pack Hostly
       run: dotnet pack "src/Hostly/Hostly.csproj" --configuration Release --no-restore --verbosity normal
     - name: pack Hostly.Android
-      run: nuget pack "src/Hostly.Android/Hostly.Android.csproj" -IncludeReferencedProjects -properties Configuration=Release
+      run: nuget pack "src/Hostly.Android/Hostly.Android.csproj" -properties Configuration=Release
     - name: pack Hostly.iOS
-      run: nuget pack "src/Hostly.iOS/Hostly.iOS.csproj" -IncludeReferencedProjects -properties Configuration=Release
+      run: nuget pack "src/Hostly.iOS/Hostly.iOS.csproj" -properties Configuration=Release
 
     # Publish projects
     - name: publish
