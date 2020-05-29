@@ -44,12 +44,12 @@ jobs:
 
     # Pack projects
     - name: pack Hostly
-      run: dotnet pack "src/Hostly/Hostly.csproj" --no-restore --verbosity normal
+      run: dotnet pack "src/Hostly/Hostly.csproj" --configuration Release --no-restore --verbosity normal
     - name: pack Hostly.Android
-      run: nuget pack "src/Hostly.Android/Hostly.Android.csproj" -properties Configuration=Release
+      run: nuget pack "src/Hostly.Android/Hostly.Android.csproj" -IncludeReferencedProjects -properties Configuration=Release
     - name: pack Hostly.iOS
-      run: nuget pack "src/Hostly.iOS/Hostly.iOS.csproj" -properties Configuration=Release
+      run: nuget pack "src/Hostly.iOS/Hostly.iOS.csproj" -IncludeReferencedProjects -properties Configuration=Release
 
     # Publish projects
     - name: publish
-      run: dotnet nuget push *.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --no-symbols --skip-duplicate
+      run: dotnet nuget push *.nupkg --no-symbols --skip-duplicate --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
