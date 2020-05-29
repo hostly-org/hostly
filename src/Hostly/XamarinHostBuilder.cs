@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Hostly.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
@@ -188,12 +189,22 @@ namespace Hostly
             {
                 containerAction.ConfigureContainer(_hostBuilderContext, containerBuilder);
             }
-
+            
             _appServices = _serviceProviderFactory.CreateServiceProvider(containerBuilder);
 
             if (_appServices == null)
             {
                 throw new InvalidOperationException($"The IServiceProviderFactory returned a null IServiceProvider.");
+            }
+
+            if(_appServices.GetRequiredService<IXamarinHostingPlatform>() == null)
+            {
+                throw new InvalidOperationException($"Please register an instance of {nameof(IXamarinHostingPlatform)}, this can be done using the {nameof(IXamarinHostBuilder)}.{nameof(XamarinHostBuilderExtensions.UsePlatform)} extension method");
+            }
+
+            if (_appServices.GetRequiredService<IXamarinApplication>() == null)
+            {
+                throw new InvalidOperationException($"Please register an instance of {nameof(IXamarinApplication)}, this can be done using the {nameof(IXamarinHostBuilder)}.{nameof(XamarinHostBuilderExtensions.UseApplication)} extension method");
             }
         }
     }
