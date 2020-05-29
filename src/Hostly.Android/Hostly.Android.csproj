@@ -51,8 +51,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Extensions\XamarinHostBuilderExtensions1.cs" />
     <Compile Include="AndroidHostingPlatform.cs" />
+    <Compile Include="Extensions\XamarinHostBuilderExtensions.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

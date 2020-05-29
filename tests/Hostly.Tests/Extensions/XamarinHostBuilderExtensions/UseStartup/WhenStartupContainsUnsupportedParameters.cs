@@ -27,7 +27,7 @@ namespace Hostly.Tests.Extensions.XamarinHostBuilderExtensions.UseStartup
             ExceptionMode = ExceptionMode.Record;
 
             _xamarinHostBuilder.UsePlatform<MockPlatform>()
-                .UseApplication<MockApplication>()
+                .UseApplication<MockXamarinApplication>()
                 .UseStartup<Startup>();
 
             return Task.CompletedTask;

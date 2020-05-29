@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Hostly.Tests.Extensions.XamarinHostBuilderExtensions.UseApplication
 {
-    public class WhenValidApplicationInstanceSupplied : XamarinHostSpecification
+    public class WhenApplicationInstanceThatImplmentsIXamarinApplicationSupplied : XamarinHostSpecification
     {
-        private MockApplication _expectedApplication;
+        private MockXamarinApplication _expectedApplication;
 
         protected override Task Given()
         {
@@ -17,7 +17,7 @@ namespace Hostly.Tests.Extensions.XamarinHostBuilderExtensions.UseApplication
 
         protected override Task When()
         {
-            _expectedApplication = new MockApplication();
+            _expectedApplication = new MockXamarinApplication();
 
             _xamarinHostBuilder.UsePlatform(new MockPlatform())
                 .UseApplication(_expectedApplication);

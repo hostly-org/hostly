@@ -37,7 +37,7 @@ namespace Hostly.Tests.XamarinHost.StopAsync
 
         protected override Task When()
         {
-            _xamarinHostBuilder.UseApplication<MockApplication>()
+            _xamarinHostBuilder.UseApplication<MockXamarinApplication>()
                 .UsePlatform<MockPlatform>()
                 .ConfigureServices((ctx, services) =>
                 {
