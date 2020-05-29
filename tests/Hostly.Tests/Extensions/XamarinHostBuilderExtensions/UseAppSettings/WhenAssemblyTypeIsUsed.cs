@@ -17,7 +17,7 @@ namespace Hostly.Tests.Extensions.XamarinHostBuilderExtensions.UseAppSettings
         protected override Task When()
         {
             _xamarinHostBuilder.UsePlatform<MockPlatform>()
-                .UseApplication<MockApplication>()
+                .UseApplication<MockXamarinApplication>()
                 .UseAppSettings<MockStartup>();
 
             return Task.CompletedTask;

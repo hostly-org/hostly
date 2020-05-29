@@ -20,7 +20,7 @@ namespace Hostly.Tests.Extensions.XamarinHostBuilderExtensions.UsePlatform
             _expectedPlatform = new MockPlatform();
 
             _xamarinHostBuilder.UsePlatform(_expectedPlatform)
-                .UseApplication<MockApplication>();
+                .UseApplication<MockXamarinApplication>();
 
             return Task.CompletedTask;
         }

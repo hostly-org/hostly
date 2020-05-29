@@ -1,12 +1,12 @@
-﻿using FluentAssertions;
+﻿using System.Threading.Tasks;
+using FluentAssertions;
 using Hostly.Extensions;
 using Hostly.Tests.Mocks;
 using Microsoft.Extensions.DependencyInjection;
-using System.Threading.Tasks;
 
 namespace Hostly.Tests.Extensions.XamarinHostBuilderExtensions.UseApplication
 {
-    public class WhenValidApplicationTypeSupplied : XamarinHostSpecification
+    public class WhenApplicationTypeThatDoesNotImplmentIXamarinApplicationSupplied : XamarinHostSpecification
     {
         protected override Task Given()
         {
@@ -24,7 +24,7 @@ namespace Hostly.Tests.Extensions.XamarinHostBuilderExtensions.UseApplication
         [Then]
         public void ShouldHaveExpectedApplicationType()
         {
-            Host.Services.GetRequiredService<IXamarinApplication>().Should().BeOfType<MockApplication>();
+            Host.Services.GetRequiredService<IXamarinApplication>().Should().BeAssignableTo<MockApplication>();
         }
     }
 }

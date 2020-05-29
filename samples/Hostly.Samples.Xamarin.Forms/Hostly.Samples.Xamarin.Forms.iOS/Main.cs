@@ -1,6 +1,6 @@
 ﻿using UIKit;
 
-namespace Hostly.Samples.Xamarin.Forms.iOS
+namespace Hostly.Samples.Xamarin.Forms.IOS
 {
     public class Program
     {
