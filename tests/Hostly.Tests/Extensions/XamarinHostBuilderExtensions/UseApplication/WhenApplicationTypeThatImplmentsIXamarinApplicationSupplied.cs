@@ -4,9 +4,9 @@ using Hostly.Tests.Mocks;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 
-namespace Hostly.Tests.Extensions.XamarinHostBuilderExtensions.UsePlatform
+namespace Hostly.Tests.Extensions.XamarinHostBuilderExtensions.UseApplication
 {
-    public class WhenValidPlatformTypeSupplied : XamarinHostSpecification
+    public class WhenApplicationTypeThatImplmentsIXamarinApplicationSupplied : XamarinHostSpecification
     {
         protected override Task Given()
         {
@@ -15,7 +15,7 @@ namespace Hostly.Tests.Extensions.XamarinHostBuilderExtensions.UsePlatform
 
         protected override Task When()
         {
-            _xamarinHostBuilder.UsePlatform<MockPlatform>()
+            _xamarinHostBuilder.UsePlatform(new MockPlatform())
                 .UseApplication<MockXamarinApplication>();
 
             return Task.CompletedTask;
@@ -24,7 +24,7 @@ namespace Hostly.Tests.Extensions.XamarinHostBuilderExtensions.UsePlatform
         [Then]
         public void ShouldHaveExpectedApplicationType()
         {
-            Host.Services.GetRequiredService<IXamarinHostingPlatform>().Should().BeOfType<MockPlatform>();
+            Host.Services.GetRequiredService<IXamarinApplication>().Should().BeOfType<MockXamarinApplication>();
         }
     }
 }

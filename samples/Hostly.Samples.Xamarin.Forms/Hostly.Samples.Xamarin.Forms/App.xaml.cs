@@ -2,7 +2,7 @@
 
 namespace Hostly.Samples.Xamarin.Forms
 {
-    public partial class App : Application, IXamarinApplication
+    public partial class App : Application
     {
         public App()
         {

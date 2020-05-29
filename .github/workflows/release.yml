@@ -8,16 +8,21 @@ jobs:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
-    
+    # Install NuGet
     - name: Setup Nuget.exe
       uses: warrenbuckley/Setup-Nuget@v1
+
+    # Install .NET Core
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.101
+
+    # Install MSBuild
     - name: Setup MSBuild
       uses: warrenbuckley/Setup-MSBuild@v1
 
+    # Restore projects
     - name: Restore Hostly
       run: dotnet restore "src/Hostly/Hostly.csproj"
     - name: Restore Hostly.Android
@@ -25,6 +30,7 @@ jobs:
     - name: Restore Hostly.iOS
       run: nuget restore "src/Hostly.iOS/Hostly.iOS.csproj"
 
+    # Build projects
     - name: Build Hostly
       run: dotnet build "src/Hostly/Hostly.csproj" --configuration Release --no-restore
     - name: Build Hostly.Android
@@ -32,9 +38,11 @@ jobs:
     - name: Build Hostly.iOS
       run: msbuild "src/Hostly.iOS/Hostly.iOS.csproj" -p:Configuration=Release
 
+    # Test projects
     - name: Test
       run: dotnet test "tests/Hostly.Tests/Hostly.Tests.csproj" --no-restore --verbosity normal
 
+    # Pack projects
     - name: pack Hostly
       run: dotnet pack "src/Hostly/Hostly.csproj" --no-restore --verbosity normal
     - name: pack Hostly.Android
@@ -42,5 +50,6 @@ jobs:
     - name: pack Hostly.iOS
       run: nuget pack "src/Hostly.iOS/Hostly.iOS.csproj" -properties Configuration=Release
 
+    # Publish projects
     - name: publish
       run: dotnet nuget push *.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json

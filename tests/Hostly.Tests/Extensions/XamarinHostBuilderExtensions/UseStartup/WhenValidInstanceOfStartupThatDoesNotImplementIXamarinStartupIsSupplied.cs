@@ -20,7 +20,7 @@ namespace Hostly.Tests.Extensions.XamarinHostBuilderExtensions.UseStartup
             _expectedStartup = new MockStartup();
 
             _xamarinHostBuilder.UsePlatform<MockPlatform>()
-                .UseApplication<MockApplication>()
+                .UseApplication<MockXamarinApplication>()
                 .UseStartup(_expectedStartup);
 
             return Task.CompletedTask;
