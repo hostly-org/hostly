@@ -2,6 +2,9 @@
 
 namespace Hostly
 {
+    /// <summary>
+    /// Represents environment for <see cref="IXamarinHost"/>.
+    /// </summary>
     public interface IXamarinHostEnvironment : IHostEnvironment
     {
         /// <summary>

@@ -61,9 +61,9 @@ namespace Hostly
         }
 
         /// <summary>
-        /// Registers the <see cref="IServiceProviderFactory<typeparamref name="TContainerBuilder"/>"/>
+        /// Registers the <see cref="IServiceProviderFactory{TContainerBuilder}"/>
         /// </summary>
-        /// <param name="factory">The <see cref="IServiceProviderFactory<typeparamref name="TContainerBuilder"/>"/> to be registered .</param>
+        /// <param name="factory">The <see cref="IServiceProviderFactory{TContainerBuilder}"/> to be registered .</param>
         /// <returns>The <see cref="IXamarinHostBuilder"/>.</returns>
         public IXamarinHostBuilder UseServiceProviderFactory<TContainerBuilder>(IServiceProviderFactory<TContainerBuilder> factory)
         {

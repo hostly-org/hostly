@@ -3,6 +3,9 @@ using Xamarin.Forms.Platform.iOS;
 
 namespace Hostly.IOS.Extensions
 {
+    /// <summary>
+    /// Extension methods for <see cref="IXamarinHostBuilder"/>.
+    /// </summary>
     public static class XamarinHostBuilderExtensions
     {
         /// <summary>

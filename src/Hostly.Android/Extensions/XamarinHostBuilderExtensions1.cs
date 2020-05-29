@@ -3,7 +3,10 @@ using Xamarin.Forms.Platform.Android;
 
 namespace Hostly.Android.Extensions
 {
-    public static class XamarinHostBUilderExtensions
+    /// <summary>
+    /// Extension methods for <see cref="IXamarinHostBuilder"/>.
+    /// </summary>
+    public static class XamarinHostBuilderExtensions
     {
         /// <summary>
         /// Configures the host services with an insatnce of <see cref="IXamarinHostingPlatform"/>
