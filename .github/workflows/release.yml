@@ -4,7 +4,7 @@ on:
   push:
     branches: [ release/* ]
 jobs:
-  build:
+  release:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
@@ -44,7 +44,7 @@ jobs:
 
     # Pack projects
     - name: pack Hostly
-      run: dotnet pack "src/Hostly/Hostly.csproj" --configuration Release --no-restore --verbosity normal
+      run: dotnet pack "src/Hostly/Hostly.csproj" --output "./" --configuration Release --no-restore --verbosity normal
     - name: pack Hostly.Android
       run: nuget pack "src/Hostly.Android/Hostly.Android.csproj" -properties Configuration=Release
     - name: pack Hostly.iOS
