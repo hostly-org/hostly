@@ -1,4 +1,5 @@
-# Hostly
+![hostly](https://github.com/hostly-org/hostly/blob/master/src/Hostly/images/icon.png)
+#  Hostly
 A .Net Core host style builder for Xamarin apps.
 
 ![Build](https://github.com/hostly-org/hostly/workflows/Build/badge.svg)
