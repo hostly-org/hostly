@@ -62,5 +62,8 @@
   <ItemGroup>
     <None Include="Hostly.iOS.nuspec" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="images\icon.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
