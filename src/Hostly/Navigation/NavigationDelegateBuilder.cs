@@ -9,25 +9,25 @@ namespace Hostly.Navigation
 {
     internal class NavigationDelegateBuilder : INavigationDelegateBuilder
     {
-        private readonly Stack<InsertPageBeforeDelegate> _insertBeforePageDelegates;
-        private readonly Stack<PushDelegate> _pushDelegates;
-        private readonly Stack<PopDelegate> _popDelegates;
-        private readonly Stack<PushModalDelegate> _pushModalDelegates;
-        private readonly Stack<PopModalDelegate> _popModalDelegates;
-        private readonly Stack<PopToRootDelegate> _popToRootDelegates;
-        private readonly Stack<RemovePageDelegate> _removePageDelegates;
+        private readonly IList<Action<InsertPageBeforeDelegate, NavigationContext>> _insertBeforePageDelegates;
+        private readonly IList<Func<PushDelegate, NavigationContext, Task>> _pushDelegates;
+        private readonly IList<Func<PopDelegate, NavigationContext, Task>> _popDelegates;
+        private readonly IList<Func<PushModalDelegate, NavigationContext, Task>> _pushModalDelegates;
+        private readonly IList<Func<PopModalDelegate, NavigationContext, Task>> _popModalDelegates;
+        private readonly IList<Func<PopToRootDelegate, NavigationContext, Task>> _popToRootDelegates;
+        private readonly IList<Action<RemovePageDelegate, NavigationContext>> _removePageDelegates;
 
         private readonly Dictionary<Type, Action<object, MethodInfo>> _delegateActions;
 
         public NavigationDelegateBuilder(IServiceProvider serviceProvider)
         {
-            _insertBeforePageDelegates = new Stack<InsertPageBeforeDelegate>();
-            _pushDelegates = new Stack<PushDelegate>();
-            _popDelegates = new Stack<PopDelegate>();
-            _pushModalDelegates = new Stack<PushModalDelegate>();
-            _popModalDelegates = new Stack<PopModalDelegate>();
-            _popToRootDelegates = new Stack<PopToRootDelegate>();
-            _removePageDelegates = new Stack<RemovePageDelegate>();
+            _insertBeforePageDelegates = new List<Action<InsertPageBeforeDelegate, NavigationContext>>();
+            _pushDelegates = new List<Func<PushDelegate, NavigationContext, Task>>();
+            _popDelegates = new List<Func<PopDelegate, NavigationContext, Task>>();
+            _pushModalDelegates = new List<Func<PushModalDelegate, NavigationContext, Task>>();
+            _popModalDelegates = new List<Func<PopModalDelegate, NavigationContext, Task>>();
+            _popToRootDelegates = new List<Func<PopToRootDelegate, NavigationContext, Task>>();
+            _removePageDelegates = new List<Action<RemovePageDelegate, NavigationContext>>();
 
             _delegateActions = new Dictionary<Type, Action<object, MethodInfo>>();
 
@@ -40,54 +40,20 @@ namespace Hostly.Navigation
             _delegateActions.Add(typeof(RemovePageDelegate), HandleRemovePage);
         }
 
-        public void ProcessDelegate(Action<InsertPageBeforeDelegate, NavigationContext> action)
-        {
-            var previous = _insertBeforePageDelegates.Count > 0 ? _insertBeforePageDelegates.Pop() : (ctx => { });
-            var @delegate = (InsertPageBeforeDelegate)(ctx => action(previous, ctx));
-            _insertBeforePageDelegates.Push(@delegate);
-        }
-
-        public void ProcessDelegate(Func<PushDelegate, NavigationContext, Task> func)
-        {
-            var previous = _pushDelegates.Count > 0 ? _pushDelegates.Pop() : (ctx => Task.CompletedTask);
-            var @delegate = (PushDelegate)(ctx => func(previous, ctx));
-            _pushDelegates.Push(@delegate);
-        }
-
-        public void ProcessDelegate(Func<PopDelegate, NavigationContext, Task> func)
-        {
-            var previous = _popDelegates.Count > 0 ? _popDelegates.Pop() : (ctx => Task.CompletedTask);
-            var @delegate = (PopDelegate)(ctx => func(previous, ctx));
-            _popDelegates.Push(@delegate);
-        }
-
-        public void ProcessDelegate(Func<PushModalDelegate, NavigationContext, Task> func)
-        {
-            var previous = _pushModalDelegates.Count > 0 ? _pushModalDelegates.Pop() : (ctx => Task.CompletedTask);
-            var @delegate = (PushModalDelegate)(ctx => func(previous, ctx));
-            _pushModalDelegates.Push(@delegate);
-        }
-
-        public void ProcessDelegate(Func<PopModalDelegate, NavigationContext, Task> func)
-        {
-            var previous = _popModalDelegates.Count > 0 ? _popModalDelegates.Pop() : (ctx => Task.CompletedTask);
-            var @delegate = (PopModalDelegate)(ctx => func(previous, ctx));
-            _popModalDelegates.Push(@delegate);
-        }
-
-        public void ProcessDelegate(Func<PopToRootDelegate, NavigationContext, Task> func)
-        {
-            var previous = _popToRootDelegates.Count > 0 ? _popToRootDelegates.Pop() : (ctx => Task.CompletedTask);
-            var @delegate = (PopToRootDelegate)(ctx => func(previous, ctx));
-            _popToRootDelegates.Push(@delegate);
-        }
-
-        public void ProcessDelegate(Action<RemovePageDelegate, NavigationContext> action)
-        {
-            var previous = _removePageDelegates.Count > 0 ? _removePageDelegates.Pop() : (ctx => { });
-            var @delegate = (RemovePageDelegate)(ctx => action(previous, ctx));
-            _removePageDelegates.Push(@delegate);
-        }
+        public void ProcessDelegate(Action<InsertPageBeforeDelegate, NavigationContext> action) => _insertBeforePageDelegates.Add(action);
+        public void ProcessDelegate(Func<PushDelegate, NavigationContext, Task> func) => _pushDelegates.Add(func);
+        public void ProcessDelegate(Func<PopDelegate, NavigationContext, Task> func) => _popDelegates.Add(func);
+        public void ProcessDelegate(Func<PushModalDelegate, NavigationContext, Task> func) => _pushModalDelegates.Add(func);
+        public void ProcessDelegate(Func<PopModalDelegate, NavigationContext, Task> func) => _popModalDelegates.Add(func);
+        public void ProcessDelegate(Func<PopToRootDelegate, NavigationContext, Task> func) => _popToRootDelegates.Add(func);
+        public void ProcessDelegate(Action<RemovePageDelegate, NavigationContext> action) => _removePageDelegates.Add(action);
+        private void HandleInsertBeforePage(object middleware, MethodInfo method) => _insertBeforePageDelegates.Add((next, ctx) => method.Invoke(middleware, BuildParams(ctx, method, next).ToArray()));
+        private void HandlePush(object middleware, MethodInfo method) => _pushDelegates.Add((next, ctx) => (Task)method.Invoke(middleware, BuildParams(ctx, method, next).ToArray()));
+        private void HandlePop(object middleware, MethodInfo method) => _popDelegates.Add(((next, ctx) => (Task)method.Invoke(middleware, BuildParams(ctx, method, next).ToArray())));
+        private void HandlePushModal(object middleware, MethodInfo method) => _pushModalDelegates.Add((next, ctx) => (Task)method.Invoke(middleware, BuildParams(ctx, method, next).ToArray()));
+        private void HandlePopModal(object middleware, MethodInfo method) => _popModalDelegates.Add((next, ctx) => (Task)method.Invoke(middleware, BuildParams(ctx, method, next).ToArray()));
+        private void HandlePopToRoot(object middleware, MethodInfo method) => _popToRootDelegates.Add((next, ctx) => (Task)method.Invoke(middleware, BuildParams(ctx, method, next).ToArray()));
+        private void HandleRemovePage(object middleware, MethodInfo method) => _removePageDelegates.Add((next, ctx) => method.Invoke(middleware, BuildParams(ctx, method, next).ToArray()));
 
         public bool TryProcessDelegate<TMiddleware, TDelegate>(TMiddleware middleware)
             where TMiddleware : class
@@ -95,7 +61,7 @@ namespace Hostly.Navigation
         {
             var delegateType = typeof(TDelegate);
             var methods = typeof(TMiddleware).GetMethods()
-                .Where(m => m.GetParameters().Length > 0 && m.GetParameters().Any(pi => pi.ParameterType == delegateType))
+                .Where(m => m.GetParameters().Length > 0 && m.GetParameters().All(pi => pi.ParameterType == delegateType || pi.ParameterType == typeof(NavigationContext)))
                 .ToArray();
 
             if (methods.Length == 0)
@@ -106,8 +72,8 @@ namespace Hostly.Navigation
 
             var methodParams = methods[0].GetParameters();
 
-            if (methodParams.Length > 2 || methodParams.Any(p => p.ParameterType != typeof(NavigationContext)))
-                throw new InvalidOperationException($"'{methods[0].Name}' has invalid parameters, only types of '{typeof(TDelegate).Name}' and '{typeof(NavigationContext).Name}' are valid");
+            if (methodParams.Length > 2)
+                throw new InvalidOperationException($"'{methods[0].Name}' has invalid parameters, only single parameter of '{typeof(TDelegate).Name}' and '{typeof(NavigationContext).Name}' are allowed");
 
             ProcessDelegate<TDelegate>(middleware, methods[0]);
 
@@ -120,64 +86,38 @@ namespace Hostly.Navigation
                 action(middleware, method);
         }
 
-        public void GenerateProxies()
+        public void BuildProxies()
         {
-            XamarinProxies.NavigationProxy.InsertPageBeforeDelegate = _insertBeforePageDelegates.Count > 0 ? _insertBeforePageDelegates.Pop() : (ctx => { });
-            XamarinProxies.NavigationProxy.PushDelegate = _pushDelegates.Count > 0 ? _pushDelegates.Pop() : (ctx => Task.CompletedTask);
-            XamarinProxies.NavigationProxy.PopDelegate = _popDelegates.Count > 0 ? _popDelegates.Pop() : (ctx => Task.CompletedTask);
-            XamarinProxies.NavigationProxy.PushModalDelegate = _pushModalDelegates.Count > 0 ? _pushModalDelegates.Pop() : (ctx => Task.CompletedTask);
-            XamarinProxies.NavigationProxy.PopModalDelegate = _popModalDelegates.Count > 0 ? _popModalDelegates.Pop() : (ctx => Task.CompletedTask);
-            XamarinProxies.NavigationProxy.PopToRootDelegate = _popToRootDelegates.Count > 0 ? _popToRootDelegates.Pop() : (ctx => Task.CompletedTask);
-            XamarinProxies.NavigationProxy.RemovePageDelegate = _removePageDelegates.Count > 0 ? _removePageDelegates.Pop() : (ctx => { });
-        }
+            InsertPageBeforeDelegate insertPageBeforeDelegate = ctx => { };
+            PushDelegate pushDelegate = ctx => Task.CompletedTask;
+            PopDelegate popDelegate = ctx => Task.CompletedTask;
+            PushModalDelegate pushModalDelegate = ctx => Task.CompletedTask;
+            PopModalDelegate popModalDelegate = ctx => Task.CompletedTask;
+            PopToRootDelegate popToRootDelegate = ctx => Task.CompletedTask;
+            RemovePageDelegate removePageDelegate = ctx => { };
 
-        private void HandleInsertBeforePage(object middleware, MethodInfo method)
-        {
-            var previous = _insertBeforePageDelegates.Count > 0 ? _insertBeforePageDelegates.Pop() : (ctx => { });
-            var @delegate = (InsertPageBeforeDelegate)(ctx => method.Invoke(middleware, BuildParams(ctx, method, previous).ToArray()));
-            _insertBeforePageDelegates.Push(@delegate);
-        }
+            foreach (var @delegate in _insertBeforePageDelegates.Reverse())
+                insertPageBeforeDelegate = (ctx) => @delegate(insertPageBeforeDelegate, ctx);
+            foreach (var @delegate in _pushDelegates.Reverse())
+                pushDelegate = (ctx) => @delegate(pushDelegate, ctx);
+            foreach (var @delegate in _popDelegates.Reverse())
+                popDelegate = (ctx) => @delegate(popDelegate, ctx);
+            foreach (var @delegate in _pushModalDelegates.Reverse())
+                pushModalDelegate = (ctx) => @delegate(pushModalDelegate, ctx);
+            foreach (var @delegate in _popModalDelegates.Reverse())
+                popModalDelegate = (ctx) => @delegate(popModalDelegate, ctx);
+            foreach (var @delegate in _popToRootDelegates.Reverse())
+                popToRootDelegate = (ctx) => @delegate(popToRootDelegate, ctx);
+            foreach (var @delegate in _removePageDelegates.Reverse())
+                removePageDelegate = (ctx) => @delegate(removePageDelegate, ctx);
 
-        private void HandlePush(object middleware, MethodInfo method)
-        {
-            var previous = _pushDelegates.Count > 0 ? _pushDelegates.Pop() : (ctx => Task.CompletedTask);
-            var @delegate = (PushDelegate)(ctx => (Task)method.Invoke(middleware, BuildParams(ctx, method, previous).ToArray()));
-            _pushDelegates.Push(@delegate);
-        }
-
-        private void HandlePop(object middleware, MethodInfo method)
-        {
-            var previous = _popDelegates.Count > 0 ? _popDelegates.Pop() : (ctx => Task.CompletedTask);
-            var @delegate = (PopDelegate)(ctx => (Task)method.Invoke(middleware, BuildParams(ctx, method, previous).ToArray()));
-            _popDelegates.Push(@delegate);
-        }
-
-        private void HandlePushModal(object middleware, MethodInfo method)
-        {
-            var previous = _pushModalDelegates.Count > 0 ? _pushModalDelegates.Pop() : (ctx => Task.CompletedTask);
-            var @delegate = (PushModalDelegate)(ctx => (Task)method.Invoke(middleware, BuildParams(ctx, method, previous).ToArray()));
-            _pushModalDelegates.Push(@delegate);
-        }
-
-        private void HandlePopModal(object middleware, MethodInfo method)
-        {
-            var previous = _popModalDelegates.Count > 0 ? _popModalDelegates.Pop() : (ctx => Task.CompletedTask);
-            var @delegate = (PopModalDelegate)(ctx => (Task)method.Invoke(middleware, BuildParams(ctx, method, previous).ToArray()));
-            _popModalDelegates.Push(@delegate);
-        }
-
-        private void HandlePopToRoot(object middleware, MethodInfo method)
-        {
-            var previous = _popToRootDelegates.Count > 0 ? _popToRootDelegates.Pop() : (ctx => Task.CompletedTask);
-            var @delegate = (PopToRootDelegate)(ctx => (Task)method.Invoke(middleware, BuildParams(ctx, method, previous).ToArray()));
-            _popToRootDelegates.Push(@delegate);
-        }
-
-        private void HandleRemovePage(object middleware, MethodInfo method)
-        {
-            var previous = _removePageDelegates.Count > 0 ? _removePageDelegates.Pop() : (ctx => { });
-            var @delegate = (RemovePageDelegate)(ctx => method.Invoke(middleware, BuildParams(ctx, method, previous).ToArray()));
-            _removePageDelegates.Push(@delegate);
+            XamarinProxies.NavigationProxy.InsertPageBeforeDelegate = insertPageBeforeDelegate;
+            XamarinProxies.NavigationProxy.PushDelegate = pushDelegate;
+            XamarinProxies.NavigationProxy.PopDelegate = popDelegate;
+            XamarinProxies.NavigationProxy.PushModalDelegate = pushModalDelegate;
+            XamarinProxies.NavigationProxy.PopModalDelegate = popModalDelegate;
+            XamarinProxies.NavigationProxy.PopToRootDelegate = popToRootDelegate;
+            XamarinProxies.NavigationProxy.RemovePageDelegate = removePageDelegate;
         }
 
         private IEnumerable<object> BuildParams(NavigationContext context, MethodInfo methodInfo, object arg)

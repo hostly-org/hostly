@@ -16,6 +16,6 @@ namespace Hostly.Navigation
         void ProcessDelegate(Func<PopModalDelegate, NavigationContext, Task> func);
         void ProcessDelegate(Func<PopToRootDelegate, NavigationContext, Task> func);
         void ProcessDelegate(Action<RemovePageDelegate, NavigationContext> action);
-        void GenerateProxies();
+        void BuildProxies();
     }
 }

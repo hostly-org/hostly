@@ -17,7 +17,7 @@ namespace Hostly.Navigation
             _navigationDelegateBuilder = navigationDelegateBuilder;
         }
 
-        public void Build() => _navigationDelegateBuilder.GenerateProxies();
+        public void Build() => _navigationDelegateBuilder.BuildProxies();
         public void UseMiddleware(Action<InsertPageBeforeDelegate, NavigationContext> action) => _navigationDelegateBuilder.ProcessDelegate(action);
         public void UseMiddleware(Func<PushDelegate, NavigationContext, Task> func) => _navigationDelegateBuilder.ProcessDelegate(func);
         public void UseMiddleware(Func<PopDelegate, NavigationContext, Task> func) => _navigationDelegateBuilder.ProcessDelegate(func);
@@ -51,12 +51,12 @@ namespace Hostly.Navigation
             var middleware = (TMiddleware)constructor.Invoke(@params);
 
             if(!_navigationDelegateBuilder.TryProcessDelegate<TMiddleware, InsertPageBeforeDelegate>(middleware)
-                && !_navigationDelegateBuilder.TryProcessDelegate<TMiddleware, PushDelegate>(middleware)
-                && !_navigationDelegateBuilder.TryProcessDelegate<TMiddleware, PopDelegate>(middleware)
-                && !_navigationDelegateBuilder.TryProcessDelegate<TMiddleware, PushModalDelegate>(middleware)
-                && !_navigationDelegateBuilder.TryProcessDelegate<TMiddleware, PopModalDelegate>(middleware)
-                && !_navigationDelegateBuilder.TryProcessDelegate<TMiddleware, PopToRootDelegate>(middleware)
-                && !_navigationDelegateBuilder.TryProcessDelegate<TMiddleware, RemovePageDelegate>(middleware))
+                & !_navigationDelegateBuilder.TryProcessDelegate<TMiddleware, PushDelegate>(middleware)
+                & !_navigationDelegateBuilder.TryProcessDelegate<TMiddleware, PopDelegate>(middleware)
+                & !_navigationDelegateBuilder.TryProcessDelegate<TMiddleware, PushModalDelegate>(middleware)
+                & !_navigationDelegateBuilder.TryProcessDelegate<TMiddleware, PopModalDelegate>(middleware)
+                & !_navigationDelegateBuilder.TryProcessDelegate<TMiddleware, PopToRootDelegate>(middleware)
+                & !_navigationDelegateBuilder.TryProcessDelegate<TMiddleware, RemovePageDelegate>(middleware))
             {
                 throw new InvalidOperationException($"Middleware of type: {typeof(TMiddleware)} must implement at least one navigation delegate");
             }
