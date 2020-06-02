@@ -99,7 +99,7 @@ namespace Hostly.Internals
 
         public void RemovePage(Page page)
         {
-            RemovePage(page);
+            RemovePageDelegate(new NavigationContext(page));
             _root.RemovePage(page);
         }
     }
