@@ -72,21 +72,6 @@ namespace Hostly.Extensions
             });
         }
 
-        public static IXamarinHostBuilder UseNavigationRoot<TRoot>(this IXamarinHostBuilder builder, TRoot root)
-        {
-            XamarinProxies.NavigationProxy = new XamarinNavigationProxy(root);
-            return builder;
-        }
-
-        public static IXamarinHostBuilder UseNavigationRoot<TRoot>(this IXamarinHostBuilder builder) where TRoot: class, new()
-        {
-            return builder.ConfigureServices((context, services) =>
-            {
-                services.AddSingleton<TRoot>();
-                builder.UseNavigationRoot(services.BuildServiceProvider().GetRequiredService<TRoot>());
-            });
-        }
-
         /// <summary>
         /// Configures the host services with an insatnce of <see cref="IXamarinApplication"/>
         /// </summary>
