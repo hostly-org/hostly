@@ -2,6 +2,7 @@
 using System.IO;
 using System.Reflection;
 using System.Reflection.Emit;
+using Hostly.Internals;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -68,6 +69,21 @@ namespace Hostly.Extensions
                     services.AddSingleton(typeof(IXamarinApplication), typeof(TApp));
                 else
                     services.AddSingleton(typeof(IXamarinApplication), XamarinApplicationBuilder.Build<TApp>());
+            });
+        }
+
+        public static IXamarinHostBuilder UseNavigationRoot<TRoot>(this IXamarinHostBuilder builder, TRoot root)
+        {
+            XamarinProxies.NavigationProxy = new XamarinNavigationProxy(root);
+            return builder;
+        }
+
+        public static IXamarinHostBuilder UseNavigationRoot<TRoot>(this IXamarinHostBuilder builder) where TRoot: class, new()
+        {
+            return builder.ConfigureServices((context, services) =>
+            {
+                services.AddSingleton<TRoot>();
+                builder.UseNavigationRoot(services.BuildServiceProvider().GetRequiredService<TRoot>());
             });
         }
 

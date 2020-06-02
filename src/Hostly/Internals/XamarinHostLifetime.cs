@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 
-namespace Hostly
+namespace Hostly.Internals
 {
     internal sealed class XamarinHostLifetime : IHostLifetime
     {

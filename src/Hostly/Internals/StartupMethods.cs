@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Hostly
+namespace Hostly.Internals
 {
     internal sealed class StartupMethods
     {

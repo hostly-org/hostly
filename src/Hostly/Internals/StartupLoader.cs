@@ -5,7 +5,7 @@ using System.Reflection;
 using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Hostly
+namespace Hostly.Internals
 {
     internal sealed class StartupLoader
     {

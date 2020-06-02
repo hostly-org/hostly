@@ -170,6 +170,7 @@ namespace Hostly
             services.AddSingleton<IHostApplicationLifetime, ApplicationLifetime>();
             services.AddSingleton<IHostLifetime, XamarinHostLifetime>();
             services.AddSingleton<IXamarinHost, XamarinHost>();
+            services.AddSingleton<INavigation, XamarinNavigation>();
             services.AddOptions();
             services.AddLogging();
 

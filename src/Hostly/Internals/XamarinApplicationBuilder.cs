@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
+using Xamarin.Forms;
+using Xamarin.Forms.Internals;
 
-namespace Hostly
+namespace Hostly.Internals
 {
     internal static class XamarinApplicationBuilder
     {
@@ -72,6 +75,45 @@ namespace Hostly
                 }
                 emitter.Emit(OpCodes.Call, constructor);
 
+                emitter.Emit(OpCodes.Nop);
+
+                // Setup navigation proxy - emit the following in IL:
+                // var prop = typeof(Application).GetProperty(nameof(Application.NavigationProxy), BindingFlags.Instance | BindingFlags.Public);
+                // prop.SetValue(this, new NavigationProxy(this), BindingFlags.NonPublic | BindingFlags.Instance, null, null, null);
+                // XamarinProxies.NavigationProxy = (XamarinNavigationProxy)prop.GetValue(this);
+
+                emitter.Emit(OpCodes.Nop);
+                
+                emitter.DeclareLocal(typeof(FieldInfo));
+
+                // typeof(Application)
+                emitter.Emit(OpCodes.Ldtoken, typeof(Application));
+
+                // typeof(Application).GetProperty(nameof(Application.NavigationProxy), BindingFlags.Instance | BindingFlags.Public);
+                emitter.Emit(OpCodes.Call, typeof(Type).GetMethod(nameof(Type.GetTypeFromHandle), new Type[1] { typeof(RuntimeTypeHandle) }));
+                emitter.Emit(OpCodes.Ldstr, nameof(Application.NavigationProxy));
+                emitter.Emit(OpCodes.Ldc_I4_S, (int)(BindingFlags.Instance | BindingFlags.Public));
+                emitter.Emit(OpCodes.Callvirt, typeof(Type).GetMethod(nameof(Type.GetProperty), new Type[2] { typeof(string), typeof(BindingFlags) }));
+
+
+                emitter.Emit(OpCodes.Stloc_0);
+                emitter.Emit(OpCodes.Ldloc_0);
+                emitter.Emit(OpCodes.Ldarg_0);
+                emitter.Emit(OpCodes.Ldarg_0);
+                emitter.Emit(OpCodes.Newobj, typeof(XamarinNavigationProxy).GetConstructor(new Type[1] { typeof(object) }));
+                emitter.Emit(OpCodes.Ldc_I4_S, (int)(BindingFlags.Instance | BindingFlags.NonPublic));
+                emitter.Emit(OpCodes.Ldnull);
+                emitter.Emit(OpCodes.Ldnull);
+                emitter.Emit(OpCodes.Ldnull);
+                emitter.Emit(OpCodes.Callvirt, typeof(PropertyInfo).GetMethod(nameof(PropertyInfo.SetValue), new Type[6] { typeof(object), typeof(object), typeof(BindingFlags), typeof(Binder), typeof(object[]), typeof(CultureInfo) }));
+                emitter.Emit(OpCodes.Nop);
+
+                emitter.Emit(OpCodes.Ldloc_0);
+                emitter.Emit(OpCodes.Ldarg_0);
+                emitter.Emit(OpCodes.Callvirt, typeof(PropertyInfo).GetMethod(nameof(PropertyInfo.GetValue), new Type[1] { typeof(object) }));
+                emitter.Emit(OpCodes.Castclass, typeof(XamarinNavigationProxy));
+                emitter.Emit(OpCodes.Call, typeof(XamarinProxies).GetMethod(nameof(XamarinProxies.SetNavigationProxy), new Type[1] { typeof(XamarinNavigationProxy) }));
+                emitter.Emit(OpCodes.Nop);
                 emitter.Emit(OpCodes.Ret);
             }
         }

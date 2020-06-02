@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Runtime.ExceptionServices;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Hostly
+namespace Hostly.Internals
 {
     internal sealed class XamarinStartup : IXamarinStartup
     {
