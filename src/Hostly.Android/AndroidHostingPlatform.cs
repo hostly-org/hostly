@@ -71,7 +71,7 @@ namespace Hostly.Android
         }
 
 
-        public void LoadApplication(IXamarinApplication application)
+        public void LoadApplication(object application)
         {
             if (typeof(global::Xamarin.Forms.Application).IsAssignableFrom(application.GetType()))
             {

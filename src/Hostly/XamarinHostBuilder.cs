@@ -185,7 +185,7 @@ namespace Hostly
             services.AddSingleton<IHostLifetime, XamarinHostLifetime>();
             services.AddSingleton<IXamarinHost, XamarinHost>();
             services.AddSingleton<INavigation, XamarinNavigation>();
-            services.AddSingleton<INavigationDelegateBuilder, NavigationDelegateBuilder>();
+            services.AddSingleton<INavigationProxyBuilder, NavigationProxyBuilder>();
             services.AddSingleton<INavigationBuilder, NavigationBuilder>();
 
             services.AddOptions();
@@ -220,9 +220,9 @@ namespace Hostly
                 throw new InvalidOperationException($"Please register an instance of {nameof(IXamarinHostingPlatform)}, this can be done using the {nameof(IXamarinHostBuilder)}.{nameof(XamarinHostBuilderExtensions.UsePlatform)} extension method");
             }
 
-            if (_appServices.GetRequiredService<IXamarinApplication>() == null)
+            if (_appServices.GetRequiredService<XamarinApplicationDelegate>() == null)
             {
-                throw new InvalidOperationException($"Please register an instance of {nameof(IXamarinApplication)}, this can be done using the {nameof(IXamarinHostBuilder)}.{nameof(XamarinHostBuilderExtensions.UseApplication)} extension method");
+                throw new InvalidOperationException($"Please register an instance of your application, this can be done using the {nameof(IXamarinHostBuilder)}.{nameof(XamarinHostBuilderExtensions.UseApplication)} extension method");
             }
 
             var navigationBuilder = _appServices.GetRequiredService<INavigationBuilder>();

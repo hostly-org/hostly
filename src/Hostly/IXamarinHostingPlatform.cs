@@ -42,6 +42,6 @@ namespace Hostly
         /// <summary>
         /// Entry point to load <see cref="IXamarinApplication"/>
         /// </summary>
-        void LoadApplication(IXamarinApplication application);
+        void LoadApplication(object application);
     }
 }

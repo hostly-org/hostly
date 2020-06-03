@@ -1,6 +1,6 @@
 ﻿namespace Hostly.Tests.Mocks
 {
-    public class MockXamarinApplication : IXamarinApplication
+    public class MockXamarinApplication
     {
     }
 }

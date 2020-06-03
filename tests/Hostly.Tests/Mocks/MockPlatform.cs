@@ -16,7 +16,7 @@ namespace Hostly.Tests.Mocks
 
         public bool Loaded { get; private set; }
 
-        public void LoadApplication(IXamarinApplication application) 
+        public void LoadApplication(object application) 
         {
             Loaded = true;
         }

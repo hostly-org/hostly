@@ -6,7 +6,7 @@ using Xamarin.Forms.Internals;
 
 namespace Hostly.Internals
 {
-    public sealed class XamarinNavigationProxy : NavigationProxy
+    internal sealed class XamarinNavigationProxy : NavigationProxy
     {
         private readonly INavigation _root;
 

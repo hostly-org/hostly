@@ -61,14 +61,17 @@ namespace Hostly.Extensions
         /// <typeparam name ="TApp">The type used to register <see cref="IXamarinApplication"/>. Must either be of type Application or IXamarinApplication</typeparam>
         /// <param name="builder">The <see cref="IXamarinHostBuilder"/> to configure.</param>
         /// <returns>The <see cref="IXamarinHostBuilder"/>.</returns>
-        public static IXamarinHostBuilder UseApplication<TApp>(this IXamarinHostBuilder builder)
+        public static IXamarinHostBuilder UseApplication<TApp>(this IXamarinHostBuilder builder) where TApp : class
         {
             return builder.ConfigureServices((context, services) =>
             {
-                if (typeof(IXamarinApplication).IsAssignableFrom(typeof(TApp)))
-                    services.AddSingleton(typeof(IXamarinApplication), typeof(TApp));
-                else
-                    services.AddSingleton(typeof(IXamarinApplication), XamarinApplicationBuilder.Build<TApp>());
+                var factory = new XamarinApplicationDelegateFactory();
+
+                services.AddSingleton(sp =>
+                {
+                    factory.Init(sp);
+                    return factory.Create<TApp>();
+                });
             });
         }
 
@@ -79,11 +82,12 @@ namespace Hostly.Extensions
         /// <param name="builder">The <see cref="IXamarinHostBuilder"/> to configure.</param>
         /// <param name="app">The instance of <see cref="IXamarinApplication"/> to register.</param>
         /// <returns>The <see cref="IXamarinHostBuilder"/>.</returns>
-        public static IXamarinHostBuilder UseApplication<TApp>(this IXamarinHostBuilder builder, TApp app) where TApp : IXamarinApplication
+        public static IXamarinHostBuilder UseApplication<TApp>(this IXamarinHostBuilder builder, TApp app) where TApp : class
         {
             return builder.ConfigureServices((context, services) =>
             {
-                services.AddSingleton<IXamarinApplication>(app);
+                XamarinApplicationDelegate @delegate = () => app;
+                services.AddSingleton(@delegate);
             });
         }
 

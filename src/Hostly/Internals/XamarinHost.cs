@@ -18,7 +18,7 @@ namespace Hostly.Internals
         private readonly ApplicationLifetime _applicationLifetime;
         private readonly HostOptions _options;
         private readonly IXamarinHostingPlatform _platform;
-        private readonly IXamarinApplication _application;
+        private readonly object _application;
 
         private IEnumerable<IHostedService> _hostedServices;
         public IServiceProvider Services { get; }
@@ -28,7 +28,7 @@ namespace Hostly.Internals
             IHostLifetime hostLifetime, 
             IOptions<HostOptions> options,
             IXamarinHostingPlatform platform,
-            IXamarinApplication application)
+            XamarinApplicationDelegate applicationDelegate)
         {
             if (services == null)
                 throw new ArgumentNullException(nameof(services));
@@ -40,15 +40,15 @@ namespace Hostly.Internals
                 throw new ArgumentNullException(nameof(options));
             if (platform == null)
                 throw new ArgumentNullException(nameof(platform));
-            if (application == null)
-                throw new ArgumentNullException(nameof(application));
+            if (applicationDelegate == null)
+                throw new ArgumentNullException(nameof(applicationDelegate));
 
             Services = services;
             _applicationLifetime = applicationLifetime as ApplicationLifetime;
             _hostLifetime = hostLifetime;
             _options = options.Value;
             _platform = platform;
-            _application = application;
+            _application = applicationDelegate();
         }
 
         public async Task StartAsync(CancellationToken cancellationToken = default)

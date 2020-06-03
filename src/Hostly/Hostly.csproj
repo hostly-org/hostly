@@ -28,7 +28,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="images\icon.png" Pack="true" PackagePath=""/>
+    <None Include="images\icon.png" Pack="true" PackagePath="" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,7 +37,6 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.0" />
-    <PackageReference Include="System.Reflection.Emit" Version="4.7.0" />
     <PackageReference Include="Xamarin.Essentials" Version="1.2.0" />
     <PackageReference Include="Xamarin.Forms" Version="4.2.0.709249" />
   </ItemGroup>

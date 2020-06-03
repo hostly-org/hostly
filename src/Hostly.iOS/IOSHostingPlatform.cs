@@ -32,7 +32,7 @@ namespace Hostly.IOS
             UIApplication.Notifications.ObserveWillTerminate((sender, args) => OnStopped(this, null));
         }
 
-        public void LoadApplication(IXamarinApplication application)
+        public void LoadApplication(object application)
         {
             if (typeof(global::Xamarin.Forms.Application).IsAssignableFrom(application.GetType()))
             {
