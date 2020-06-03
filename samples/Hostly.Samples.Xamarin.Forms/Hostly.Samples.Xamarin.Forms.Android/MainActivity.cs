@@ -30,9 +30,7 @@ namespace Hostly.Samples.Xamarin.Forms.Droid
                 .UseAppSettings<Startup>()
                 .UsePlatform(this)
                 .ConfigureHostConfiguration(c => c.AddCommandLine(new string[] { $"ContentRoot={FileSystem.AppDataDirectory}" }))
-                .ConfigureNavigationConfiguration((ctx, sp, b) => {
-                    b.UseMiddleware<NavigationMiddleware>();
-                })
+                .UseNavigationMiddleware<NavigationMiddleware>()
                 .Build()
                 .StartAsync().Wait();
         }

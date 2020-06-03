@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using Hostly.Extensions;
+using Hostly.Internals;
 using Hostly.Tests.Mocks;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
@@ -24,7 +25,7 @@ namespace Hostly.Tests.Extensions.XamarinHostBuilderExtensions.UseApplication
         [Then]
         public void ShouldHaveExpectedApplicationType()
         {
-            Host.Services.GetRequiredService<IXamarinApplication>().Should().BeOfType<MockXamarinApplication>();
+            Host.Services.GetRequiredService<XamarinApplicationDelegate>()().Should().BeOfType<MockXamarinApplication>();
         }
     }
 }

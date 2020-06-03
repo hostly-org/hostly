@@ -2,7 +2,9 @@
 using System.IO;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Threading.Tasks;
 using Hostly.Internals;
+using Hostly.Navigation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -183,6 +185,62 @@ namespace Hostly.Extensions
         public static IXamarinHostBuilder UseStartup<TStartup>(this IXamarinHostBuilder hostBuilder) where TStartup : class, new()
         {
             return hostBuilder.UseStartup(new TStartup());
+        }
+
+        public static IXamarinHostBuilder UseNavigationMiddleware(this IXamarinHostBuilder builder, Action<InsertPageBeforeDelegate, NavigationContext> action)
+        {
+            return builder.ConfigureNavigation((ctx, sp, sb) =>
+            {
+                sb.UseMiddleware(action);
+            });
+        }
+
+        public static IXamarinHostBuilder UseNavigationMiddleware(this IXamarinHostBuilder builder,  Func<PushDelegate, NavigationContext, Task> func)
+        {
+            return builder.ConfigureNavigation((ctx, sp, sb) =>
+            {
+                sb.UseMiddleware(func);
+            });
+        }
+
+        public static IXamarinHostBuilder UseNavigationMiddleware(this IXamarinHostBuilder builder, Func<PopDelegate, NavigationContext, Task> func)
+        {
+            return builder.ConfigureNavigation((ctx, sp, sb) =>
+            {
+                sb.UseMiddleware(func);
+            });
+        }
+
+        public static IXamarinHostBuilder UseNavigationMiddleware(this IXamarinHostBuilder builder, Func<PushModalDelegate, NavigationContext, Task> func)
+        {
+            return builder.ConfigureNavigation((ctx, sp, sb) =>
+            {
+                sb.UseMiddleware(func);
+            });
+        }
+
+        public static IXamarinHostBuilder UseNavigationMiddleware(this IXamarinHostBuilder builder, Func<PopModalDelegate, NavigationContext, Task> func)
+        {
+            return builder.ConfigureNavigation((ctx, sp, sb) =>
+            {
+                sb.UseMiddleware(func);
+            });
+        }
+
+        public static IXamarinHostBuilder UseNavigationMiddleware(this IXamarinHostBuilder builder, Action<RemovePageDelegate, NavigationContext> action)
+        {
+            return builder.ConfigureNavigation((ctx, sp, sb) =>
+            {
+                sb.UseMiddleware(action);
+            });
+        }
+
+        public static IXamarinHostBuilder UseNavigationMiddleware<TMiddleware>(this IXamarinHostBuilder builder) where TMiddleware : class
+        {
+            return builder.ConfigureNavigation((ctx, sp, sb) =>
+            {
+                sb.UseMiddleware<TMiddleware>();
+            });
         }
     }
 }

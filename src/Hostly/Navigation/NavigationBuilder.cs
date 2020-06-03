@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Hostly.Navigation
 {
-    internal sealed class NavigationBuilder : INavigationBuilder
+    internal sealed class NavigationBuilder : IExtendedNavigationBuilder
     {
 
         private readonly IServiceProvider _serviceProvider;

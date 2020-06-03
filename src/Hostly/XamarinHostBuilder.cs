@@ -47,7 +47,7 @@ namespace Hostly
         /// </summary>
         /// <param name="configureDelegate">A delegate for configuring the <see cref="IConfiguration"/>.</param>
         /// <returns>The <see cref="IXamarinHostBuilder"/>.</returns>
-        public IXamarinHostBuilder ConfigureNavigationConfiguration(Action<XamarinHostBuilderContext, IServiceProvider, INavigationBuilder> configureDelegate)
+        public IXamarinHostBuilder ConfigureNavigation(Action<XamarinHostBuilderContext, IServiceProvider, INavigationBuilder> configureDelegate)
         {
             _configureNavigationConfigActions.Add(configureDelegate ?? throw new ArgumentNullException(nameof(configureDelegate)));
             return this;
@@ -186,7 +186,7 @@ namespace Hostly
             services.AddSingleton<IXamarinHost, XamarinHost>();
             services.AddSingleton<INavigation, XamarinNavigation>();
             services.AddSingleton<INavigationProxyBuilder, NavigationProxyBuilder>();
-            services.AddSingleton<INavigationBuilder, NavigationBuilder>();
+            services.AddSingleton<IExtendedNavigationBuilder, NavigationBuilder>();
 
             services.AddOptions();
             services.AddLogging();
@@ -225,7 +225,7 @@ namespace Hostly
                 throw new InvalidOperationException($"Please register an instance of your application, this can be done using the {nameof(IXamarinHostBuilder)}.{nameof(XamarinHostBuilderExtensions.UseApplication)} extension method");
             }
 
-            var navigationBuilder = _appServices.GetRequiredService<INavigationBuilder>();
+            var navigationBuilder = _appServices.GetRequiredService<IExtendedNavigationBuilder>();
 
             foreach (var navigationAction in _configureNavigationConfigActions)
             {
