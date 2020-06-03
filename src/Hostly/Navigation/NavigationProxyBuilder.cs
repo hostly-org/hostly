@@ -18,11 +18,11 @@ namespace Hostly.Navigation
         private readonly IList<Action<RemovePageDelegate, NavigationContext>> _removePageDelegates;
 
         private readonly Dictionary<Type, Action<object, MethodInfo>> _delegateActions;
-        private readonly XamarinApplicationDelegate _xamarinApplicationDelegate;
+        private readonly XamarinNavigationDelegate _xamarinNavigationDelegate;
 
-        public NavigationProxyBuilder(XamarinApplicationDelegate xamarinApplicationDelegate)
+        public NavigationProxyBuilder(XamarinNavigationDelegate xamarinNavigationDelegate)
         {
-            _xamarinApplicationDelegate = xamarinApplicationDelegate;
+            _xamarinNavigationDelegate = xamarinNavigationDelegate;
 
             _insertBeforePageDelegates = new List<Action<InsertPageBeforeDelegate, NavigationContext>>();
             _pushDelegates = new List<Func<PushDelegate, NavigationContext, Task>>();
@@ -125,10 +125,7 @@ namespace Hostly.Navigation
             foreach (var @delegate in _removePageDelegates.Reverse())
                 removePageDelegate = (ctx) => @delegate(removePageDelegate, ctx);
 
-            // If navigation root has not been set then do it now with the application registered.
-            if (XamarinProxies.NavigationProxy == null)
-                XamarinProxies.NavigationProxy = new XamarinNavigationProxy(_xamarinApplicationDelegate());
-
+            XamarinProxies.NavigationProxy = new XamarinNavigationProxy(_xamarinNavigationDelegate());
             XamarinProxies.NavigationProxy.InsertPageBeforeDelegate = insertPageBeforeDelegate;
             XamarinProxies.NavigationProxy.PushDelegate = pushDelegate;
             XamarinProxies.NavigationProxy.PopDelegate = popDelegate;

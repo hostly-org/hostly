@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace Hostly.Navigation
 {
     public interface INavigationBuilder
     {
-        void Build();
         void UseMiddleware(Action<InsertPageBeforeDelegate, NavigationContext> action);
         void UseMiddleware(Func<PushDelegate, NavigationContext, Task> func);
         void UseMiddleware(Func<PopDelegate, NavigationContext, Task> func);

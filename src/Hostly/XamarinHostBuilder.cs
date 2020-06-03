@@ -6,6 +6,7 @@ using Hostly.Internals;
 using Hostly.Navigation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Hosting.Internal;
@@ -207,7 +208,10 @@ namespace Hostly
             {
                 containerAction.ConfigureContainer(_hostBuilderContext, containerBuilder);
             }
-            
+
+            // If no navigation root has been set it to the application
+            services.TryAddSingleton<XamarinNavigationDelegate>(sp => () => sp.GetRequiredService<XamarinApplicationDelegate>()());
+
             _appServices = _serviceProviderFactory.CreateServiceProvider(containerBuilder);
 
             if (_appServices == null)

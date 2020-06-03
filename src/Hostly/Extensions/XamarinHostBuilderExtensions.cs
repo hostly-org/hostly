@@ -242,5 +242,27 @@ namespace Hostly.Extensions
                 sb.UseMiddleware<TMiddleware>();
             });
         }
+
+        public static IXamarinHostBuilder UseNavigationRoot<TNavigationRoot>(this IXamarinHostBuilder builder) where TNavigationRoot : class
+        {
+            return builder.ConfigureServices((context, services) =>
+            {
+                if (!typeof(INavigation).IsAssignableFrom(typeof(TNavigationRoot)) || !typeof(Application).IsAssignableFrom(typeof(TNavigationRoot)))
+                    throw new InvalidOperationException($"Navigation root must be of type {nameof(INavigation)} or {nameof(Application)}");
+
+                services.AddSingleton<XamarinNavigationDelegate>(sp =>() => Internals.Activator.Activate<TNavigationRoot>(sp));
+            });
+        }
+
+        public static IXamarinHostBuilder UseNavigationRoot<TNavigationRoot>(this IXamarinHostBuilder builder, TNavigationRoot root) where TNavigationRoot : class
+        {
+            return builder.ConfigureServices((context, services) =>
+            {
+                if (!typeof(INavigation).IsAssignableFrom(typeof(TNavigationRoot)) || !typeof(Application).IsAssignableFrom(typeof(TNavigationRoot)))
+                    throw new InvalidOperationException($"Navigation root must be of type {nameof(INavigation)} or {nameof(Application)}");
+
+                services.AddSingleton<XamarinNavigationDelegate>(sp => () => root);
+            });
+        }
     }
 }
