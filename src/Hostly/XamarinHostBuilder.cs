@@ -185,7 +185,8 @@ namespace Hostly
             services.AddSingleton<IHostApplicationLifetime, ApplicationLifetime>();
             services.AddSingleton<IHostLifetime, XamarinHostLifetime>();
             services.AddSingleton<IXamarinHost, XamarinHost>();
-            services.AddSingleton<INavigation, XamarinNavigation>();
+            services.AddSingleton<XamarinNavigationProxy>();
+            services.AddSingleton<INavigation>(sp => sp.GetRequiredService<XamarinNavigationProxy>());
             services.AddSingleton<INavigationProxyBuilder, NavigationProxyBuilder>();
             services.AddSingleton<IExtendedNavigationBuilder, NavigationBuilder>();
 
@@ -209,8 +210,8 @@ namespace Hostly
                 containerAction.ConfigureContainer(_hostBuilderContext, containerBuilder);
             }
 
-            // If no navigation root has been set it to the application
-            services.TryAddSingleton<XamarinNavigationDelegate>(sp => () => sp.GetRequiredService<XamarinApplicationDelegate>()());
+            // If no navigation root has been configured, then set it to the application
+            services.TryAddSingleton<XamarinNavigationRootDelegate>(sp => () => sp.GetRequiredService<XamarinApplicationDelegate>()());
 
             _appServices = _serviceProviderFactory.CreateServiceProvider(containerBuilder);
 

@@ -8,7 +8,7 @@ namespace Hostly.Internals
 {
     internal sealed class XamarinNavigationProxy : NavigationProxy
     {
-        private readonly INavigation _root;
+        private INavigation _root;
 
         internal InsertPageBeforeDelegate InsertPageBeforeDelegate { private get; set; }
         internal PushDelegate PushDelegate { private get; set; }
@@ -18,7 +18,7 @@ namespace Hostly.Internals
         internal PopToRootDelegate PopToRootDelegate { private get; set; }
         internal RemovePageDelegate RemovePageDelegate { private get; set; }
 
-        public XamarinNavigationProxy(object owner)
+        public void Initialize(object owner)
         {
             if(typeof(INavigation).IsAssignableFrom(owner.GetType()))
                 _root = (INavigation)owner;

@@ -250,7 +250,7 @@ namespace Hostly.Extensions
                 if (!typeof(INavigation).IsAssignableFrom(typeof(TNavigationRoot)) || !typeof(Application).IsAssignableFrom(typeof(TNavigationRoot)))
                     throw new InvalidOperationException($"Navigation root must be of type {nameof(INavigation)} or {nameof(Application)}");
 
-                services.AddSingleton<XamarinNavigationDelegate>(sp =>() => Internals.Activator.Activate<TNavigationRoot>(sp));
+                services.AddSingleton<XamarinNavigationRootDelegate>(sp =>() => Internals.Activator.Activate<TNavigationRoot>(sp));
             });
         }
 
@@ -261,7 +261,7 @@ namespace Hostly.Extensions
                 if (!typeof(INavigation).IsAssignableFrom(typeof(TNavigationRoot)) || !typeof(Application).IsAssignableFrom(typeof(TNavigationRoot)))
                     throw new InvalidOperationException($"Navigation root must be of type {nameof(INavigation)} or {nameof(Application)}");
 
-                services.AddSingleton<XamarinNavigationDelegate>(sp => () => root);
+                services.AddSingleton<XamarinNavigationRootDelegate>(sp => () => root);
             });
         }
     }

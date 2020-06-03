@@ -18,11 +18,14 @@ namespace Hostly.Navigation
         private readonly IList<Action<RemovePageDelegate, NavigationContext>> _removePageDelegates;
 
         private readonly Dictionary<Type, Action<object, MethodInfo>> _delegateActions;
-        private readonly XamarinNavigationDelegate _xamarinNavigationDelegate;
+        private readonly XamarinNavigationRootDelegate _xamarinNavigationDelegate;
+        private readonly XamarinNavigationProxy _xamarinNavigationProxy;
 
-        public NavigationProxyBuilder(XamarinNavigationDelegate xamarinNavigationDelegate)
+        public NavigationProxyBuilder(XamarinNavigationRootDelegate xamarinNavigationDelegate,
+            XamarinNavigationProxy xamarinNavigationProxy)
         {
             _xamarinNavigationDelegate = xamarinNavigationDelegate;
+            _xamarinNavigationProxy = xamarinNavigationProxy;
 
             _insertBeforePageDelegates = new List<Action<InsertPageBeforeDelegate, NavigationContext>>();
             _pushDelegates = new List<Func<PushDelegate, NavigationContext, Task>>();
@@ -125,14 +128,14 @@ namespace Hostly.Navigation
             foreach (var @delegate in _removePageDelegates.Reverse())
                 removePageDelegate = (ctx) => @delegate(removePageDelegate, ctx);
 
-            XamarinProxies.NavigationProxy = new XamarinNavigationProxy(_xamarinNavigationDelegate());
-            XamarinProxies.NavigationProxy.InsertPageBeforeDelegate = insertPageBeforeDelegate;
-            XamarinProxies.NavigationProxy.PushDelegate = pushDelegate;
-            XamarinProxies.NavigationProxy.PopDelegate = popDelegate;
-            XamarinProxies.NavigationProxy.PushModalDelegate = pushModalDelegate;
-            XamarinProxies.NavigationProxy.PopModalDelegate = popModalDelegate;
-            XamarinProxies.NavigationProxy.PopToRootDelegate = popToRootDelegate;
-            XamarinProxies.NavigationProxy.RemovePageDelegate = removePageDelegate;
+            _xamarinNavigationProxy.Initialize(_xamarinNavigationDelegate());
+            _xamarinNavigationProxy.InsertPageBeforeDelegate = insertPageBeforeDelegate;
+            _xamarinNavigationProxy.PushDelegate = pushDelegate;
+            _xamarinNavigationProxy.PopDelegate = popDelegate;
+            _xamarinNavigationProxy.PushModalDelegate = pushModalDelegate;
+            _xamarinNavigationProxy.PopModalDelegate = popModalDelegate;
+            _xamarinNavigationProxy.PopToRootDelegate = popToRootDelegate;
+            _xamarinNavigationProxy.RemovePageDelegate = removePageDelegate;
         }
     }
 }
