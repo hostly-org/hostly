@@ -2,6 +2,9 @@
 using System.IO;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Threading.Tasks;
+using Hostly.Internals;
+using Hostly.Navigation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -60,14 +63,17 @@ namespace Hostly.Extensions
         /// <typeparam name ="TApp">The type used to register <see cref="IXamarinApplication"/>. Must either be of type Application or IXamarinApplication</typeparam>
         /// <param name="builder">The <see cref="IXamarinHostBuilder"/> to configure.</param>
         /// <returns>The <see cref="IXamarinHostBuilder"/>.</returns>
-        public static IXamarinHostBuilder UseApplication<TApp>(this IXamarinHostBuilder builder)
+        public static IXamarinHostBuilder UseApplication<TApp>(this IXamarinHostBuilder builder) where TApp : class
         {
             return builder.ConfigureServices((context, services) =>
             {
-                if (typeof(IXamarinApplication).IsAssignableFrom(typeof(TApp)))
-                    services.AddSingleton(typeof(IXamarinApplication), typeof(TApp));
-                else
-                    services.AddSingleton(typeof(IXamarinApplication), XamarinApplicationBuilder.Build<TApp>());
+                var factory = new XamarinApplicationDelegateFactory();
+
+                services.AddSingleton(sp =>
+                {
+                    factory.Init(sp);
+                    return factory.Create<TApp>();
+                });
             });
         }
 
@@ -78,11 +84,12 @@ namespace Hostly.Extensions
         /// <param name="builder">The <see cref="IXamarinHostBuilder"/> to configure.</param>
         /// <param name="app">The instance of <see cref="IXamarinApplication"/> to register.</param>
         /// <returns>The <see cref="IXamarinHostBuilder"/>.</returns>
-        public static IXamarinHostBuilder UseApplication<TApp>(this IXamarinHostBuilder builder, TApp app) where TApp : IXamarinApplication
+        public static IXamarinHostBuilder UseApplication<TApp>(this IXamarinHostBuilder builder, TApp app) where TApp : class
         {
             return builder.ConfigureServices((context, services) =>
             {
-                services.AddSingleton<IXamarinApplication>(app);
+                XamarinApplicationDelegate @delegate = () => app;
+                services.AddSingleton(@delegate);
             });
         }
 
@@ -178,6 +185,84 @@ namespace Hostly.Extensions
         public static IXamarinHostBuilder UseStartup<TStartup>(this IXamarinHostBuilder hostBuilder) where TStartup : class, new()
         {
             return hostBuilder.UseStartup(new TStartup());
+        }
+
+        public static IXamarinHostBuilder UseNavigationMiddleware(this IXamarinHostBuilder builder, Action<InsertPageBeforeDelegate, NavigationContext> action)
+        {
+            return builder.ConfigureNavigation((ctx, sp, sb) =>
+            {
+                sb.UseMiddleware(action);
+            });
+        }
+
+        public static IXamarinHostBuilder UseNavigationMiddleware(this IXamarinHostBuilder builder,  Func<PushDelegate, NavigationContext, Task> func)
+        {
+            return builder.ConfigureNavigation((ctx, sp, sb) =>
+            {
+                sb.UseMiddleware(func);
+            });
+        }
+
+        public static IXamarinHostBuilder UseNavigationMiddleware(this IXamarinHostBuilder builder, Func<PopDelegate, NavigationContext, Task> func)
+        {
+            return builder.ConfigureNavigation((ctx, sp, sb) =>
+            {
+                sb.UseMiddleware(func);
+            });
+        }
+
+        public static IXamarinHostBuilder UseNavigationMiddleware(this IXamarinHostBuilder builder, Func<PushModalDelegate, NavigationContext, Task> func)
+        {
+            return builder.ConfigureNavigation((ctx, sp, sb) =>
+            {
+                sb.UseMiddleware(func);
+            });
+        }
+
+        public static IXamarinHostBuilder UseNavigationMiddleware(this IXamarinHostBuilder builder, Func<PopModalDelegate, NavigationContext, Task> func)
+        {
+            return builder.ConfigureNavigation((ctx, sp, sb) =>
+            {
+                sb.UseMiddleware(func);
+            });
+        }
+
+        public static IXamarinHostBuilder UseNavigationMiddleware(this IXamarinHostBuilder builder, Action<RemovePageDelegate, NavigationContext> action)
+        {
+            return builder.ConfigureNavigation((ctx, sp, sb) =>
+            {
+                sb.UseMiddleware(action);
+            });
+        }
+
+        public static IXamarinHostBuilder UseNavigationMiddleware<TMiddleware>(this IXamarinHostBuilder builder) where TMiddleware : class
+        {
+            return builder.ConfigureNavigation((ctx, sp, sb) =>
+            {
+                sb.UseMiddleware<TMiddleware>();
+            });
+        }
+
+        public static IXamarinHostBuilder UseNavigationRoot<TNavigationRoot>(this IXamarinHostBuilder builder) where TNavigationRoot : class
+        {
+            return builder.ConfigureServices((context, services) =>
+            {
+                if (!typeof(INavigation).IsAssignableFrom(typeof(TNavigationRoot)) || !typeof(Application).IsAssignableFrom(typeof(TNavigationRoot)))
+                    throw new InvalidOperationException($"Navigation root must be of type {nameof(INavigation)} or {nameof(Application)}");
+
+                services.AddSingleton<XamarinNavigationRootDelegate>(sp =>() => Internals.Activator.Activate<TNavigationRoot>(sp));
+            });
+        }
+
+        public static IXamarinHostBuilder UseNavigationRoot<TNavigationRoot>(this IXamarinHostBuilder builder, TNavigationRoot root) where TNavigationRoot : class
+        {
+            return builder.ConfigureServices((context, services) =>
+            {
+                if (!typeof(INavigation).IsAssignableFrom(typeof(TNavigationRoot)) || !typeof(Application).IsAssignableFrom(typeof(TNavigationRoot)))
+                    throw new InvalidOperationException($"Navigation root must be of type {nameof(INavigation)} or {nameof(Application)}");
+
+                services.AddSingleton<XamarinNavigationRootDelegate>(sp => () => root);
+            });
         }
     }
 }

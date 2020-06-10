@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Hosting.Internal;
 using Microsoft.Extensions.Options;
+using Xamarin.Forms;
 
-namespace Hostly
+namespace Hostly.Internals
 {
     internal sealed class XamarinHost : IXamarinHost
     {
@@ -16,7 +18,7 @@ namespace Hostly
         private readonly ApplicationLifetime _applicationLifetime;
         private readonly HostOptions _options;
         private readonly IXamarinHostingPlatform _platform;
-        private readonly IXamarinApplication _application;
+        private readonly object _application;
 
         private IEnumerable<IHostedService> _hostedServices;
         public IServiceProvider Services { get; }
@@ -26,7 +28,7 @@ namespace Hostly
             IHostLifetime hostLifetime, 
             IOptions<HostOptions> options,
             IXamarinHostingPlatform platform,
-            IXamarinApplication application)
+            XamarinApplicationDelegate applicationDelegate)
         {
             if (services == null)
                 throw new ArgumentNullException(nameof(services));
@@ -38,15 +40,15 @@ namespace Hostly
                 throw new ArgumentNullException(nameof(options));
             if (platform == null)
                 throw new ArgumentNullException(nameof(platform));
-            if (application == null)
-                throw new ArgumentNullException(nameof(application));
+            if (applicationDelegate == null)
+                throw new ArgumentNullException(nameof(applicationDelegate));
 
             Services = services;
             _applicationLifetime = applicationLifetime as ApplicationLifetime;
             _hostLifetime = hostLifetime;
             _options = options.Value;
             _platform = platform;
-            _application = application;
+            _application = applicationDelegate();
         }
 
         public async Task StartAsync(CancellationToken cancellationToken = default)

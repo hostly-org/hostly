@@ -1,5 +1,4 @@
-﻿using System;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 
 namespace Hostly.Samples.Xamarin.Forms
 {
@@ -8,20 +7,7 @@ namespace Hostly.Samples.Xamarin.Forms
         public App(MainPage mainPage)
         {
             InitializeComponent();
-
-            MainPage = mainPage;
-        }
-
-        protected override void OnStart()
-        {
-        }
-
-        protected override void OnSleep()
-        {
-        }
-
-        protected override void OnResume()
-        {
+            MainPage = new NavigationPage(mainPage);
         }
     }
 }

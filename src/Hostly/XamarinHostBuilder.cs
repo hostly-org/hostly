@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using Hostly.Extensions;
+using Hostly.Internals;
+using Hostly.Navigation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Hosting.Internal;
@@ -17,6 +20,7 @@ namespace Hostly
     public class XamarinHostBuilder : IXamarinHostBuilder
     {
         private List<Action<IConfigurationBuilder>> _configureHostConfigActions = new List<Action<IConfigurationBuilder>>();
+        private List<Action<XamarinHostBuilderContext, IServiceProvider, INavigationBuilder>> _configureNavigationConfigActions = new List<Action<XamarinHostBuilderContext, IServiceProvider, INavigationBuilder>>();
         private List<Action<XamarinHostBuilderContext, IConfigurationBuilder>> _configureAppConfigActions = new List<Action<XamarinHostBuilderContext, IConfigurationBuilder>>();
         private List<Action<XamarinHostBuilderContext, IServiceCollection>> _configureServicesActions = new List<Action<XamarinHostBuilderContext, IServiceCollection>>();
         private List<IConfigureContainerAdapter> _configureContainerActions = new List<IConfigureContainerAdapter>();
@@ -36,6 +40,17 @@ namespace Hostly
         public IXamarinHostBuilder ConfigureHostConfiguration(Action<IConfigurationBuilder> configureDelegate)
         {
             _configureHostConfigActions.Add(configureDelegate ?? throw new ArgumentNullException(nameof(configureDelegate)));
+            return this;
+        }
+
+        /// <summary>
+        /// Adds a delegate for configuring configuration for the <see cref="IXamarinHost"/>. This may be called multiple times.
+        /// </summary>
+        /// <param name="configureDelegate">A delegate for configuring the <see cref="IConfiguration"/>.</param>
+        /// <returns>The <see cref="IXamarinHostBuilder"/>.</returns>
+        public IXamarinHostBuilder ConfigureNavigation(Action<XamarinHostBuilderContext, IServiceProvider, INavigationBuilder> configureDelegate)
+        {
+            _configureNavigationConfigActions.Add(configureDelegate ?? throw new ArgumentNullException(nameof(configureDelegate)));
             return this;
         }
 
@@ -170,6 +185,11 @@ namespace Hostly
             services.AddSingleton<IHostApplicationLifetime, ApplicationLifetime>();
             services.AddSingleton<IHostLifetime, XamarinHostLifetime>();
             services.AddSingleton<IXamarinHost, XamarinHost>();
+            services.AddSingleton<XamarinNavigationProxy>();
+            services.AddSingleton<INavigation>(sp => sp.GetRequiredService<XamarinNavigationProxy>());
+            services.AddSingleton<INavigationProxyBuilder, NavigationProxyBuilder>();
+            services.AddSingleton<IExtendedNavigationBuilder, NavigationBuilder>();
+
             services.AddOptions();
             services.AddLogging();
 
@@ -189,7 +209,10 @@ namespace Hostly
             {
                 containerAction.ConfigureContainer(_hostBuilderContext, containerBuilder);
             }
-            
+
+            // If no navigation root has been configured, then set it to the application
+            services.TryAddSingleton<XamarinNavigationRootDelegate>(sp => () => sp.GetRequiredService<XamarinApplicationDelegate>()());
+
             _appServices = _serviceProviderFactory.CreateServiceProvider(containerBuilder);
 
             if (_appServices == null)
@@ -202,10 +225,19 @@ namespace Hostly
                 throw new InvalidOperationException($"Please register an instance of {nameof(IXamarinHostingPlatform)}, this can be done using the {nameof(IXamarinHostBuilder)}.{nameof(XamarinHostBuilderExtensions.UsePlatform)} extension method");
             }
 
-            if (_appServices.GetRequiredService<IXamarinApplication>() == null)
+            if (_appServices.GetRequiredService<XamarinApplicationDelegate>() == null)
             {
-                throw new InvalidOperationException($"Please register an instance of {nameof(IXamarinApplication)}, this can be done using the {nameof(IXamarinHostBuilder)}.{nameof(XamarinHostBuilderExtensions.UseApplication)} extension method");
+                throw new InvalidOperationException($"Please register an instance of your application, this can be done using the {nameof(IXamarinHostBuilder)}.{nameof(XamarinHostBuilderExtensions.UseApplication)} extension method");
             }
+
+            var navigationBuilder = _appServices.GetRequiredService<IExtendedNavigationBuilder>();
+
+            foreach (var navigationAction in _configureNavigationConfigActions)
+            {
+                navigationAction(_hostBuilderContext, _appServices, navigationBuilder);
+            }
+
+            navigationBuilder.Build();
         }
     }
 }

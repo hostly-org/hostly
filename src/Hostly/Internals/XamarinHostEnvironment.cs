@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.FileProviders;
 
-namespace Hostly
+namespace Hostly.Internals
 {
     internal sealed class XamarinHostEnvironment : IXamarinHostEnvironment
     {

@@ -1,6 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System;
+using Hostly.Navigation;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace Hostly
 {
@@ -15,6 +16,7 @@ namespace Hostly
         /// <param name="configureDelegate">A delegate for configuring the <see cref="IServiceCollection"/>.</param>
         /// <returns>The <see cref="IXamarinHostBuilder"/>.</returns>
         IXamarinHostBuilder ConfigureHostConfiguration(Action<IConfigurationBuilder> configureDelegate);
+        IXamarinHostBuilder ConfigureNavigation(Action<XamarinHostBuilderContext, IServiceProvider, INavigationBuilder> configureDelegate);
         /// <summary>
         /// Adds a delegate for configuring configuration for the <see cref="IXamarinHost"/>. This may be called multiple times.
         /// </summary>

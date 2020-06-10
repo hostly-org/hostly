@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Hostly
+namespace Hostly.Internals
 {
     internal class ServiceFactoryAdapter<TContainerBuilder> : IServiceFactoryAdapter
     {

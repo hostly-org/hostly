@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using UIKit;
 using Xamarin.Essentials;
 
-namespace Hostly.Samples.Xamarin.Forms.iOS
+namespace Hostly.Samples.Xamarin.Forms.IOS
 {
     // The UIApplicationDelegate for the application. This class is responsible for launching the 
     // User Interface of the application, as well as listening (and optionally responding) to 
@@ -30,6 +30,7 @@ namespace Hostly.Samples.Xamarin.Forms.iOS
                 .UseAppSettings<Startup>()
                 .UsePlatform(this)
                 .ConfigureHostConfiguration(c => c.AddCommandLine(new string[] { $"ContentRoot={FileSystem.AppDataDirectory}" }))
+                .UseNavigationMiddleware<NavigationMiddleware>()
                 .Build()
                 .StartAsync().Wait();
 
