@@ -1,13 +1,13 @@
-﻿using FluentAssertions;
+﻿using System.Threading.Tasks;
+using FluentAssertions;
 using Hostly.Extensions;
+using Hostly.Testing.Abstractions;
+using Hostly.Testing.Attributes;
 using Hostly.Tests.Mocks;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Threading.Tasks;
 
 namespace Hostly.Tests.Extensions.XamarinHostBuilderExtensions.UseStartup
 {
-    public class WhenStartupContainsNoParameters : XamarinHostSpecification
+    public class WhenStartupContainsNoParameters : Specification
     {
         private class Startup
         {

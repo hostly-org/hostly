@@ -1,14 +1,16 @@
-﻿using FluentAssertions;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using FluentAssertions;
 using Hostly.Extensions;
+using Hostly.Testing.Abstractions;
+using Hostly.Testing.Attributes;
 using Hostly.Tests.Mocks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Hostly.Tests.XamarinHost.StartAsync
 {
-    public class WhenHostedServicesAreNotRegistered : XamarinHostSpecification
+    public class WhenHostedServicesAreNotRegistered : Specification
     {
         protected override Task Given()
         {

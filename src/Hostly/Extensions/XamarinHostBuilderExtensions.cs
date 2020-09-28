@@ -1,14 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
-using System.Reflection.Emit;
 using System.Threading.Tasks;
 using Hostly.Internals;
 using Hostly.Navigation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace Hostly.Extensions

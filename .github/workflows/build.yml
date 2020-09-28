@@ -27,6 +27,8 @@ jobs:
     # Restore projects
     - name: Restore Hostly
       run: dotnet restore "src/Hostly/Hostly.csproj"
+    - name: Restore Hostly.Testing
+      run: dotnet restore "src/Hostly.Testing/Hostly.Testing.csproj"
     - name: Restore Hostly.Android
       run: nuget restore "src/Hostly.Android/Hostly.Android.csproj"
     - name: Restore Hostly.iOS
@@ -35,11 +37,13 @@ jobs:
     # Build projects
     - name: Build Hostly
       run: dotnet build "src/Hostly/Hostly.csproj" --configuration Release --no-restore
+    - name: Build Hostly.Testing
+      run: dotnet build "src/Hostly.Testing/Hostly.Testing.csproj" --configuration Release --no-restore
     - name: Build Hostly.Android
       run: msbuild "src/Hostly.Android/Hostly.Android.csproj" -p:Configuration=Release
     - name: Build Hostly.iOS
       run: msbuild "src/Hostly.iOS/Hostly.iOS.csproj" -p:Configuration=Release
 
-    # Test projects
-    - name: Test
-      run: dotnet test "tests/Hostly.Tests/Hostly.Tests.csproj" --no-restore --verbosity normal
+        # Run test projects
+    - name: Run test projects
+      run: dotnet test Hostly.sln --configuration Release --no-restore --no-build --verbosity normal --filter Category=Unit -- xunit.parallelizeAssembly=true

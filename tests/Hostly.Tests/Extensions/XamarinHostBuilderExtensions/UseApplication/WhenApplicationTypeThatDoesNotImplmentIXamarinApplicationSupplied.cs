@@ -2,12 +2,14 @@
 using FluentAssertions;
 using Hostly.Extensions;
 using Hostly.Internals;
+using Hostly.Testing.Abstractions;
+using Hostly.Testing.Attributes;
 using Hostly.Tests.Mocks;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Hostly.Tests.Extensions.XamarinHostBuilderExtensions.UseApplication
 {
-    public class WhenApplicationTypeThatDoesNotImplmentIXamarinApplicationSupplied : XamarinHostSpecification
+    public class WhenApplicationTypeThatDoesNotImplmentIXamarinApplicationSupplied : Specification
     {
         protected override Task Given()
         {

@@ -1,13 +1,15 @@
-﻿using FluentAssertions;
+﻿using System.Threading.Tasks;
+using FluentAssertions;
 using Hostly.Extensions;
 using Hostly.Internals;
+using Hostly.Testing.Abstractions;
+using Hostly.Testing.Attributes;
 using Hostly.Tests.Mocks;
 using Microsoft.Extensions.DependencyInjection;
-using System.Threading.Tasks;
 
 namespace Hostly.Tests.Extensions.XamarinHostBuilderExtensions.UseApplication
 {
-    public class WhenApplicationInstanceThatImplmentsIXamarinApplicationSupplied : XamarinHostSpecification
+    public class WhenApplicationInstanceThatImplmentsIXamarinApplicationSupplied : Specification
     {
         private MockXamarinApplication _expectedApplication;
 

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
-namespace Hostly.Tests.Mocks
+namespace Hosting.Testing.Abstractions
 {
-    public class MockPlatformServices : IPlatformServices
+    internal sealed class TestPlatformServices : IPlatformServices
     {
         public bool IsInvokeRequired => false;
 

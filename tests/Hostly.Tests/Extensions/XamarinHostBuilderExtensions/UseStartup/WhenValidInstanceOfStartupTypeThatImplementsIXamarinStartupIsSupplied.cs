@@ -1,11 +1,13 @@
-﻿using FluentAssertions;
+﻿using System.Threading.Tasks;
+using FluentAssertions;
 using Hostly.Extensions;
+using Hostly.Testing.Abstractions;
+using Hostly.Testing.Attributes;
 using Hostly.Tests.Mocks;
-using System.Threading.Tasks;
 
 namespace Hostly.Tests.Extensions.XamarinHostBuilderExtensions.UseStartup
 {
-    public class WhenValidInstanceOfStartupTypeThatImplementsIXamarinStartupIsSupplied : XamarinHostSpecification
+    public class WhenValidInstanceOfStartupTypeThatImplementsIXamarinStartupIsSupplied : Specification
     {
         protected override Task Given()
         {

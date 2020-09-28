@@ -1,13 +1,15 @@
 ﻿using System.Threading.Tasks;
 using FluentAssertions;
 using Hostly.Extensions;
+using Hostly.Testing.Abstractions;
+using Hostly.Testing.Attributes;
 using Hostly.Tests.Mocks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Hostly.Tests.Extensions.XamarinHostBuilderExtensions.UseAppSettings
 {
-    public class WhenAssemblyTypeIsUsed : XamarinHostSpecification
+    public class WhenAssemblyTypeIsUsed : Specification
     {
         protected override Task Given()
         {

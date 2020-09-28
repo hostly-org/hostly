@@ -1,4 +1,4 @@
-﻿namespace Hostly.Tests
+﻿namespace Hostly.Testing.Abstractions
 {
     public enum ExceptionMode
     {

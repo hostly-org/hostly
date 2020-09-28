@@ -1,14 +1,14 @@
-﻿using Hostly.Tests.Mocks;
+﻿using System;
+using System.Threading.Tasks;
+using Hostly.Navigation;
+using Hostly.Testing.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Threading.Tasks;
-using Xamarin.Forms;
 using Xunit;
 
-namespace Hostly.Tests
+namespace Hostly.Testing.Abstractions
 {
-    public abstract class XamarinHostSpecification<TResult> : IAsyncLifetime
+    public abstract class Specification<TResult> : IAsyncLifetime
     {
         protected readonly IXamarinHostBuilder _xamarinHostBuilder;
         protected IXamarinHost Host { get; private set; }
@@ -17,18 +17,26 @@ namespace Hostly.Tests
         protected Exception Exception { get; private set; }
         protected ExceptionMode ExceptionMode { get; set; }
         protected TResult Result { get; private set; }
-        private bool HostRunning { get; set; }
 
-        protected virtual void BuildServices(IServiceCollection services) { }
+        protected IServiceProvider ServiceProvider => Host.Services;
 
-        public XamarinHostSpecification()
+        protected virtual void ConfigureServices(XamarinHostBuilderContext ctx, IServiceCollection services) { }
+        protected virtual void ConfigureNavigationServices(XamarinHostBuilderContext ctx, IServiceProvider serviceProvider, INavigationBuilder navigationBuilder) { }
+        protected virtual void ConfigureHost(IXamarinHostBuilder hostBuilder) 
         {
-            _xamarinHostBuilder = new XamarinHostBuilder();
-
-            Device.PlatformServices = new MockPlatformServices();
+            hostBuilder.UseTestPlatformServices();
         }
 
-        public async Task DisposeAsync()
+        public Specification()
+        {
+            _xamarinHostBuilder = new XamarinHostBuilder()
+                .ConfigureServices(ConfigureServices)
+                .ConfigureNavigation(ConfigureNavigationServices);
+
+            ConfigureHost(_xamarinHostBuilder);
+        }
+
+        public virtual async Task DisposeAsync()
         {
             var hostLifetime = Host?.Services.GetRequiredService<IHostApplicationLifetime>();
 
@@ -51,7 +59,7 @@ namespace Hostly.Tests
             }
         }
 
-        public async Task InitializeAsync()
+        public virtual async Task InitializeAsync()
         {
             await When();
 
@@ -65,12 +73,11 @@ namespace Hostly.Tests
                 if (ExceptionMode == ExceptionMode.Record)
                     Exception = e;
                 else
-                    throw e;
+                    throw;
             }
         }
     }
-
-    public abstract class XamarinHostSpecification : IAsyncLifetime
+    public abstract class Specification : IAsyncLifetime
     {
         protected readonly IXamarinHostBuilder _xamarinHostBuilder;
         protected IXamarinHost Host { get; private set; }
@@ -79,39 +86,48 @@ namespace Hostly.Tests
         protected Exception Exception { get; private set; }
         protected ExceptionMode ExceptionMode { get; set; }
 
-        protected virtual void BuildServices(IServiceCollection services) { }
+        protected IServiceProvider ServiceProvider => Host.Services;
 
-        public XamarinHostSpecification()
+        protected virtual void ConfigureServices(XamarinHostBuilderContext ctx, IServiceCollection services) { }
+        protected virtual void ConfigureNavigationServices(XamarinHostBuilderContext ctx, IServiceProvider serviceProvider, INavigationBuilder navigationBuilder) { }
+        protected virtual void ConfigureHost(IXamarinHostBuilder hostBuilder)
         {
-            _xamarinHostBuilder = new XamarinHostBuilder();
-
-            Device.PlatformServices = new MockPlatformServices();
+            hostBuilder.UseTestPlatformServices();
         }
 
-        public async Task DisposeAsync()
+        public Specification()
+        {
+            _xamarinHostBuilder = new XamarinHostBuilder()
+                .ConfigureServices(ConfigureServices)
+                .ConfigureNavigation(ConfigureNavigationServices);
+
+            ConfigureHost(_xamarinHostBuilder);
+        }
+
+        public virtual async Task DisposeAsync()
         {
             var hostLifetime = Host?.Services.GetRequiredService<IHostApplicationLifetime>();
 
             try
             {
-                if (hostLifetime != null 
+                if (hostLifetime != null
                     && hostLifetime.ApplicationStarted.IsCancellationRequested
                     && !hostLifetime.ApplicationStopping.IsCancellationRequested
                     && !hostLifetime.ApplicationStopped.IsCancellationRequested)
                     await Host.StopAsync();
             }
-            catch(OperationCanceledException)
+            catch (OperationCanceledException)
             {
                 // Should be hit as the cancelation token in hosted services will throw;
-                return;   
+                return;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 throw;
             }
         }
 
-        public async Task InitializeAsync()
+        public virtual async Task InitializeAsync()
         {
             await When();
 
@@ -125,7 +141,7 @@ namespace Hostly.Tests
                 if (ExceptionMode == ExceptionMode.Record)
                     Exception = e;
                 else
-                    throw e;
+                    throw;
             }
         }
     }

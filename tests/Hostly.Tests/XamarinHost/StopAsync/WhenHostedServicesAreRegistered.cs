@@ -1,15 +1,17 @@
-﻿using FluentAssertions;
+﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using FluentAssertions;
 using Hostly.Extensions;
+using Hostly.Testing.Abstractions;
+using Hostly.Testing.Attributes;
 using Hostly.Tests.Mocks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Hostly.Tests.XamarinHost.StopAsync
 {
-    public class WhenHostedServicesAreRegistered : XamarinHostSpecification
+    public class WhenHostedServicesAreRegistered : Specification
     {
         private class MockHostedService : IHostedService
         {

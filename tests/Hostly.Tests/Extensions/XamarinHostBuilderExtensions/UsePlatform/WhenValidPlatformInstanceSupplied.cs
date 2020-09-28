@@ -1,12 +1,14 @@
 ﻿using System.Threading.Tasks;
 using FluentAssertions;
 using Hostly.Extensions;
+using Hostly.Testing.Abstractions;
+using Hostly.Testing.Attributes;
 using Hostly.Tests.Mocks;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Hostly.Tests.Extensions.XamarinHostBuilderExtensions.UsePlatform
 {
-    public class WhenValidPlatformInstanceSupplied : XamarinHostSpecification
+    public class WhenValidPlatformInstanceSupplied : Specification
     {
         private MockPlatform _expectedPlatform;
 
