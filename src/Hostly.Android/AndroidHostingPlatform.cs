@@ -13,14 +13,14 @@ namespace Hostly.Android
     {
         private readonly FormsAppCompatActivity _app;
 
-        public event EventHandler OnStarted;
-        public event EventHandler OnStopped;
-        public event EventHandler OnDeactivate;
-        public event EventHandler OnPause;
-        public event EventHandler OnEnterForeground;
-        public event EventHandler OnResume;
-        public event EventHandler OnCreated;
-        public event EventHandler OnDestroyed;
+        public event EventHandler<object> OnStarted;
+        public event EventHandler<object> OnStopped;
+        public event EventHandler<object> OnDeactivate;
+        public event EventHandler<object> OnPause;
+        public event EventHandler<object> OnEnterForeground;
+        public event EventHandler<object> OnResume;
+        public event EventHandler<object> OnCreated;
+        public event EventHandler<object> OnDestroyed;
 
         public AndroidHostingPlatform(FormsAppCompatActivity app)
         {
@@ -53,7 +53,7 @@ namespace Hostly.Android
         [Export]
         public void Resumed()
         {
-            OnPause(this, new EventArgs());
+            OnResume(this, new EventArgs());
         }
 
         [Lifecycle.Event.OnStop]

@@ -8,37 +8,37 @@ namespace Hostly
     public interface IXamarinHostingPlatform
     {
         /// <summary>
-        /// Event fired when platform has been created
+        /// Event fired when platform has been created (Android, iOS)
         /// </summary>
-        event EventHandler OnCreated;
+        event EventHandler<object> OnCreated;
         /// <summary>
-        /// Event fired when platform has been destroyed (this is only avaliable)
+        /// Event fired when platform has been destroyed (Android)
         /// </summary>
-        event EventHandler OnDestroyed;
+        event EventHandler<object> OnDestroyed;
         /// <summary>
-        /// Event fired when platform has started
+        /// Event fired when platform has started (Android, iOS)
         /// </summary>
-        event EventHandler OnStarted;
+        event EventHandler<object> OnStarted;
         /// <summary>
-        /// Event fired when platform has been suspended
+        /// Event fired when platform has been suspended (Android, iOS, UWP)
         /// </summary>
-        event EventHandler OnStopped;
+        event EventHandler<object> OnStopped;
         /// <summary>
-        /// Event fired when platform has become deactivated before being moved into the background (this is only avaliable in iOS)
+        /// Event fired when platform has become deactivated before being moved into the background (iOS, UWP)
         /// </summary>
-        event EventHandler OnDeactivate;
+        event EventHandler<object> OnDeactivate;
         /// <summary>
-        /// Event fired when platform has entered the background
+        /// Event fired when platform has entered the background (Android, iOS, UWP)
         /// </summary>
-        event EventHandler OnPause;
+        event EventHandler<object> OnPause;
         /// <summary>
-        /// Event fired when platform has entered the foreground before becoming active (this is only avaliable in iOS)
+        /// Event fired when platform has entered the foreground before becoming active (iOS, UWP)
         /// </summary>
-        event EventHandler OnEnterForeground;
+        event EventHandler<object> OnEnterForeground;
         /// <summary>
-        /// Event fired when platform has become active in the foreground
+        /// Event fired when platform has become active in the foreground (Android, iOS, UWP)
         /// </summary>
-        event EventHandler OnResume;
+        event EventHandler<object> OnResume;
         /// <summary>
         /// Entry point to load <see cref="IXamarinApplication"/>
         /// </summary>

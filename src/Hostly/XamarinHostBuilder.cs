@@ -137,8 +137,16 @@ namespace Hostly
                 ApplicationName = _hostConfiguration[XamarinHostDefaults.ApplicationKey],
                 EnvironmentName = _hostConfiguration[XamarinHostDefaults.EnvironmentKey] ?? Environments.Production,
                 ContentRootPath = ResolveContentRootPath(_hostConfiguration[HostDefaults.ContentRootKey], AppContext.BaseDirectory),
-                DevicePlatform = Device.RuntimePlatform
             };
+
+            try
+            {
+                _hostEnvironment.DevicePlatform = Device.RuntimePlatform;
+            }
+            catch (Exception)
+            {
+            }
+
             _hostEnvironment.ContentRootFileProvider = new PhysicalFileProvider(_hostEnvironment.ContentRootPath);
         }
 

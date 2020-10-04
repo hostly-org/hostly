@@ -10,26 +10,26 @@ namespace Hostly.IOS
     internal sealed class IOSHostingPlatform : IXamarinHostingPlatform
     {
         private readonly FormsApplicationDelegate _activity;
-        public event EventHandler OnStarted;
-        public event EventHandler OnStopped;
-        public event EventHandler OnDeactivate;
-        public event EventHandler OnPause;
-        public event EventHandler OnEnterForeground;
-        public event EventHandler OnResume;
-        public event EventHandler OnCreated;
-        public event EventHandler OnDestroyed;
+        public event EventHandler<object> OnStarted;
+        public event EventHandler<object> OnStopped;
+        public event EventHandler<object> OnDeactivate;
+        public event EventHandler<object> OnPause;
+        public event EventHandler<object> OnEnterForeground;
+        public event EventHandler<object> OnResume;
+        public event EventHandler<object> OnCreated;
+        public event EventHandler<object> OnDestroyed;
 
         public IOSHostingPlatform(FormsApplicationDelegate activity)
         {
             _activity = activity;
 
-            UIApplication.Notifications.ObserveDidFinishLaunching((sender, args) => OnCreated(this, null));
-            UIApplication.Notifications.ObserveDidBecomeActive((sender, args) => OnStarted(this, null));
-            UIApplication.Notifications.ObserveWillResignActive((sender, args) => OnDeactivate(this, null));
-            UIApplication.Notifications.ObserveDidEnterBackground((sender, args) => OnPause(this, null));
-            UIApplication.Notifications.ObserveWillEnterForeground((sender, args) => OnEnterForeground(this, null));
-            UIApplication.Notifications.ObserveDidBecomeActive((sender, args) => OnResume(this, null));
-            UIApplication.Notifications.ObserveWillTerminate((sender, args) => OnStopped(this, null));
+            UIApplication.Notifications.ObserveDidFinishLaunching((sender, args) => OnCreated(this, args));
+            UIApplication.Notifications.ObserveDidBecomeActive((sender, args) => OnStarted(this, args));
+            UIApplication.Notifications.ObserveWillResignActive((sender, args) => OnDeactivate(this, args));
+            UIApplication.Notifications.ObserveDidEnterBackground((sender, args) => OnPause(this, args));
+            UIApplication.Notifications.ObserveWillEnterForeground((sender, args) => OnEnterForeground(this, args));
+            UIApplication.Notifications.ObserveDidBecomeActive((sender, args) => OnResume(this, args));
+            UIApplication.Notifications.ObserveWillTerminate((sender, args) => OnStopped(this, args));
         }
 
         public void LoadApplication(object application)
