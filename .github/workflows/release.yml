@@ -44,7 +44,7 @@ jobs:
 
     # Test projects
     - name: Test
-      run: dotnet test Hostly.sln --no-restore --verbosity normal
+      run: dotnet test tests/Hostly.Tests/Hostly.Tests.csproj --no-restore --verbosity normal
 
     # Pack projects
     - name: pack Hostly
