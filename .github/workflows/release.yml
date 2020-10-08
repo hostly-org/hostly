@@ -43,8 +43,8 @@ jobs:
       run: msbuild "src/Hostly.UWP/Hostly.UWP.csproj" -p:Configuration=Release
 
     # Test projects
-    - name: Test
-      run: dotnet test tests/Hostly.Tests/Hostly.Tests.csproj --no-restore --verbosity normal
+    - name: Test projects
+      run: dotnet test Hostly.sln --configuration Release --no-restore --no-build --verbosity normal -- xunit.parallelizeAssembly=true
 
     # Pack projects
     - name: pack Hostly

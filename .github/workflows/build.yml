@@ -25,7 +25,7 @@ jobs:
       uses: warrenbuckley/Setup-MSBuild@v1
 
     # Restore projects
-    - name: Restore Hostly
+    - name: Restore Projects
       run: dotnet restore "src/Hostly/Hostly.csproj"
     - name: Restore Hostly.Android
       run: nuget restore "src/Hostly.Android/Hostly.Android.csproj"
@@ -35,7 +35,7 @@ jobs:
       run: nuget restore "src/Hostly.UWP/Hostly.UWP.csproj"
 
     # Build projects
-    - name: Build Hostly
+    - name: Build Projects
       run: dotnet build "src/Hostly/Hostly.csproj" --configuration Release --no-restore
     - name: Build Hostly.Android
       run: msbuild "src/Hostly.Android/Hostly.Android.csproj" -p:Configuration=Release
@@ -45,5 +45,5 @@ jobs:
       run: msbuild "src/Hostly.UWP/Hostly.UWP.csproj" -p:Configuration=Release
 
     # Test projects
-    - name: Test
-      run: dotnet tests/Hostly.Tests/Hostly.Tests.csproj --no-restore --verbosity normal
+    - name: Test projects
+      run: dotnet test Hostly.sln --configuration Release --no-restore --no-build --verbosity normal --filter Category=Unit -- xunit.parallelizeAssembly=true
