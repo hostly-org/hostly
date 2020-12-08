@@ -66,14 +66,14 @@ namespace Hostly.Internals
             // Initialise empty app event handlers to prevent null reference exceptions.
             _platform.OnCreated += (sender, args) => { };
             _platform.OnDeactivate += (sender, args) => { };
-            _platform.OnDestroyed += (sender, args) => { };
+            _platform.OnStopped += (sender, args) => { };
             _platform.OnEnterForeground += (sender, args) => { };
             _platform.OnPause += (sender, args) => { };
             _platform.OnResume += (sender, args) => { };
             _platform.OnStarted += (sender, args) => { };
 
             // Register host to stop when app on platform stops
-            _platform.OnStopped += async (sender, args) => await StopAsync();
+            _platform.OnDestroyed += async (sender, args) => await StopAsync();
 
             _platform.LoadApplication(_application);
             _applicationLifetime?.NotifyStarted();
